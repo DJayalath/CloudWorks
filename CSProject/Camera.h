@@ -19,7 +19,8 @@ public:
 	sf::Vector2f GetCentre() { return m_view.getCenter(); }
 
 	sf::Text GetDistText() { return m_dist_text; }
-	sf::Text GetHealthText() { return m_health_text; }
+	sf::Text GetHealthText() { return m_kill_text; }
+	sf::Text GetTimeText() { return m_time_text; }
 
 private:
 
@@ -30,6 +31,7 @@ private:
 	sf::View m_view;
 	sf::Font m_score_font;
 	sf::Text m_dist_text;
-	sf::Text m_health_text;
+	sf::Text m_kill_text;
+	sf::Text m_time_text;
 };
 

@@ -5,7 +5,7 @@
 
 //IDEA: Moving conveyor belt instead of grass? Randomly generate obstacles rather than terrain?
 
-bool DespawnEnemy(Enemy& e) { return (e.GetHealth() <= 0); }
+bool DespawnEnemy(Enemy& e) { return (e.GetHealth() <= 0 || e.GetPosition().y > 800); }
 bool DespawnBullet(Bullet& b) { return b.GetDespawn(); }
 
 GameState::GameState() :
@@ -25,6 +25,10 @@ void GameState::Init()
 	m_sp_background.setTexture(m_tex_background);
 	// Set texture size (temporarily set very wide) for scrolling
 	m_sp_background.setTextureRect(sf::IntRect(0, 0, 128000, 720));
+
+	// Generate 16 initial chunks...
+	for (int i = 0; i < 16; i++)
+		m_terrain_generator.CreateNewTerrain(m_chunks);
 }
 
 void GameState::Cleanup() {}
@@ -48,6 +52,7 @@ void GameState::Update(Engine* engine, double dt)
 	{
 		m_dt = dt;
 
+		m_player.SetTerrainHeight(m_terrain_generator.GetHeight(m_player.GetPosition().x, m_player.GetBounds().width, m_chunks.back().GetBounds().width));
 		m_player.Update(this, dt);
 		m_camera.Update(this);
 
@@ -58,13 +63,14 @@ void GameState::Update(Engine* engine, double dt)
 			e.Update(this, dt);
 
 		m_enemy_manager.Update(this);
+		m_terrain_generator.Update(this, m_chunks);
 
 		m_enemies.remove_if(DespawnEnemy);
 		m_bullets.remove_if(DespawnBullet);
 
-		if (m_player.GetHealth() == 0)
+		if (m_player.GetHealth() == 0 || m_player.GetPosition().y > 720)
 		{
-			engine->SetUserScore(m_player.GetPosition().x);
+			engine->SetUserScore(m_player.GetPosition().x * 0.1 * m_player.GetTime() * m_player.EnemiesKilled() * 100);
 			engine->PushState(STATE_ENDGAME);
 		}
 	}
@@ -78,12 +84,16 @@ void GameState::Draw(Engine* engine)
 	// On Screen Text
 	engine->GetWindow()->draw(m_camera.GetDistText());
 	engine->GetWindow()->draw(m_camera.GetHealthText());
+	engine->GetWindow()->draw(m_camera.GetTimeText());
 
 	for (auto &b : m_bullets)
 		engine->GetWindow()->draw(b.GetSprite());
 
 	for (auto &e : m_enemies)
 		engine->GetWindow()->draw(e.GetSprite());
+
+	for (auto &p : m_chunks)
+		engine->GetWindow()->draw(p.GetSprite());
 }
 
 Player* GameState::GetPlayer()

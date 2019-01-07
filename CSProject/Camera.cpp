@@ -15,15 +15,18 @@ Camera::Camera() :
 
 	// select the font
 	m_dist_text.setFont(m_score_font); // font is a sf::Font
-	m_health_text.setFont(m_score_font);
+	m_kill_text.setFont(m_score_font);
+	m_time_text.setFont(m_score_font);
 
 	// set the character size
 	m_dist_text.setCharacterSize(24); // in pixels, not points!
-	m_health_text.setCharacterSize(24);
+	m_kill_text.setCharacterSize(24);
+	m_time_text.setCharacterSize(24);
 
 	// set the color
 	m_dist_text.setFillColor(sf::Color(93, 87, 107));
-	m_health_text.setFillColor(sf::Color(93, 87, 107));
+	m_kill_text.setFillColor(sf::Color(93, 87, 107));
+	m_time_text.setFillColor(sf::Color(93, 87, 107));
 
 }
 Camera::~Camera() {}
@@ -52,10 +55,12 @@ void Camera::CheckBullets(std::list<Bullet>* bullets)
 
 void Camera::MoveText(Player* player)
 {
-	m_dist_text.setString("Distance " + std::to_string(static_cast<int>(player->GetPosition().x)));
-	m_health_text.setString("Health " + std::to_string(static_cast<int>(player->GetHealth())));
-	m_dist_text.setPosition(m_view.getCenter().x + 380, m_view.getCenter().y - 350);
-	m_health_text.setPosition(m_view.getCenter().x + 380, m_view.getCenter().y - 300);
+	m_dist_text.setString("Distance\n" + std::to_string(static_cast<int>(player->GetPosition().x)));
+	m_kill_text.setString("Kills\n" + std::to_string(static_cast<int>(player->EnemiesKilled())));
+	m_time_text.setString("Time\n" + std::to_string(static_cast<int>(player->GetTime())));
+	m_dist_text.setPosition(m_view.getCenter().x - 600, m_view.getCenter().y - 350);
+	m_kill_text.setPosition(m_view.getCenter().x - 400, m_view.getCenter().y - 350);
+	m_time_text.setPosition(m_view.getCenter().x - 250, m_view.getCenter().y - 350);
 }
 
 void Camera::MoveCamera(Player* player)

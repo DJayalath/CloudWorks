@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "AssetManager.h"
 #include "EnemyManager.h"
+#include "TerrainGenerator.h"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -30,6 +31,11 @@ public:
 	void Update(Engine* engine, double dt);
 	void Draw(Engine* engine);
 
+	float GetHeight(int x, int width)
+	{
+		return m_terrain_generator.GetHeight(x, width, m_chunks.back().GetBounds().width);
+	}
+
 	Player* GetPlayer();
 	Camera* GetCamera() { return &m_camera; }
 	std::list<Bullet>* GetBullets() { return &m_bullets; }
@@ -52,6 +58,9 @@ private:
 	Camera m_camera;
 
 	bool m_pause = false;
+
+	TerrainGenerator m_terrain_generator;
+	std::list<Plank> m_chunks;
 
 };
 

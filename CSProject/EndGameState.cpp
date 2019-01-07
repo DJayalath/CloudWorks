@@ -49,11 +49,22 @@ EndGameState::EndGameState(Engine* engine)
 	pos.y -= 288 / 2;
 	m_background.setPosition(pos);
 
+	// Score text
+	m_score.setFont(m_font);
+	m_score.setCharacterSize(36);
+	m_score.setColor(sf::Color(252, 248, 28));
+	m_score.setString("Score = " + std::to_string((int)engine->GetUserScore()));
+	text_rect = m_score.getLocalBounds();
+	m_score.setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
+	pos = engine->GetWindow()->getView().getCenter();
+	pos.y -= 20;
+	m_score.setPosition(pos);
+
 	// 'Enter Name' text
 	m_text.setFont(m_font);
 	m_text.setCharacterSize(36);
 	m_text.setColor(sf::Color(93, 87, 107));
-	m_text.setString("Enter Name: ");
+	m_text.setString("Enter Name");
 	text_rect = m_text.getLocalBounds();
 	m_text.setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	pos = engine->GetWindow()->getView().getCenter();
@@ -120,4 +131,5 @@ void EndGameState::Draw(Engine* engine)
 	engine->GetWindow()->draw(m_background);
 	engine->GetWindow()->draw(m_text);
 	engine->GetWindow()->draw(m_input);
+	engine->GetWindow()->draw(m_score);
 }

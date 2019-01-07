@@ -8,7 +8,9 @@
 Player::Player(sf::Vector2f position, sf::Vector2f scale, sf::Texture& texture) :
 	Entity(position, scale, texture),
 	m_terrain_height(position.y)
-{}
+{
+	game_timer.restart();
+}
 
 Player::~Player() {}
 
@@ -58,26 +60,7 @@ void Player::EntityCollisions(GameState* state)
 		if (this->GetBounds().intersects(e.GetBounds()))
 		{
 			this->m_health = 0;
-
-			//// Get elapsed time each collision
-			//damage_time = damage_timer.getElapsedTime().asSeconds();
-
-			//// Check if damage time exceeds cooldown
-			//if (damage_time > 0.25)
-			//{
-			//	// Restart clock if damaged
-			//	damage_timer.restart();
-			//	// Damage player
-			//	m_health -= 5;
-			//	// Set player to damage colour
-			//	m_sprite.setColor(sf::Color::Red);
-			//}
-
 		}
-		// Check if sprite is in damage colour
-		else if (m_sprite.getColor() == sf::Color::Red)
-			// Reset to normal colour
-			m_sprite.setColor(sf::Color::White);
 	}
 }
 
@@ -98,6 +81,9 @@ void Player::Move(float dt)
 		if (abs(m_velocity.x) < m_min_vel)
 			m_velocity.x = 0;
 	}
+
+	if (m_position.y < m_terrain_height)
+		m_grounded = false;
 
 	if (m_grounded)
 	{

@@ -12,7 +12,7 @@ Enemy::~Enemy() {}
 void Enemy::Update(GameState* state, double dt)
 {
 	Move(state->GetPlayer()->GetPosition().x, (float) dt, state);
-	BulletCollisions(state->GetBullets());
+	BulletCollisions(state->GetBullets(), state);
 }
 
 void Enemy::Move(float player_x, float dt, GameState* state)
@@ -34,11 +34,14 @@ void Enemy::Move(float player_x, float dt, GameState* state)
 	{
 		m_velocity.y += 500 * dt;
 
-		if (m_position.y > state->GetPlayer()->GetTerrainHeight() - 5)
+		if (m_position.y > state->GetHeight(m_position.x, this->GetBounds().width) - 5)
 		{
-			m_position.y = state->GetPlayer()->GetTerrainHeight() - 5;
-			m_velocity.y = 0;
-			grounded = true;
+			if (m_position.y < 800)
+			{
+				m_position.y = state->GetHeight(m_position.x, this->GetBounds().width) - 5;
+				m_velocity.y = 0;
+				grounded = true;
+			}
 		}
 	}
 
@@ -53,7 +56,7 @@ void Enemy::Jump(float dt)
 	m_velocity.y -= 350;
 }
 
-void Enemy::BulletCollisions(std::list<Bullet>* bullets)
+void Enemy::BulletCollisions(std::list<Bullet>* bullets, GameState* state)
 {
 	for (auto &&b : *bullets)
 	{
@@ -61,6 +64,7 @@ void Enemy::BulletCollisions(std::list<Bullet>* bullets)
 		{
 			m_health = 0;
 			b.SetDespawn(true);
+			state->GetPlayer()->EnemiesKilled() += 1;
 		}
 	}
 }

@@ -20,6 +20,8 @@ public:
 
 	// Procedure for frame-by-frame updates
 	void Update(GameState* state, double dt) override;
+	int& EnemiesKilled() { return enemies_killed; }
+	int GetTime() { return game_timer.getElapsedTime().asSeconds(); }
 
 private:
 
@@ -36,6 +38,7 @@ private:
 	const float m_max_vel = 250.f;
 	const float m_min_vel = 10.f;
 	float m_proj_vel = 0;
+	int enemies_killed = 0;
 
 
 	const float m_acceljump = 650.f;
@@ -48,6 +51,7 @@ private:
 	sf::Clock damage_timer;
 	float damage_time;
 	sf::Clock attack_timer;
+	sf::Clock game_timer;
 	float attack_time;
 
 };

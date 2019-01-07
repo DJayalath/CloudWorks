@@ -67,6 +67,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Game\States\GameState</Filter>
     </ClCompile>
+    <ClCompile Include="TerrainGenerator.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="Maths.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainGenerator.h">
+      <Filter>Game\States\GameState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

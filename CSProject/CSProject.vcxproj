@@ -162,6 +162,7 @@
     <ClCompile Include="PauseMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScoresState.cpp" />
+    <ClCompile Include="TerrainGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="ProgramState.h" />
     <ClInclude Include="ScoresState.h" />
+    <ClInclude Include="TerrainGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Iteration01 Class Diagram.cd" />

@@ -26,6 +26,7 @@ private:
 	sf::FloatRect text_rect;
 
 	sf::Font m_font;
+	sf::Text m_score;
 	sf::Text m_text;
 	sf::Text m_input;
 

@@ -16,8 +16,11 @@ void Bullet::Update(GameState* state, double dt)
 	m_velocity.y += m_gravity * (float) dt;
 	m_position += m_velocity * (float) dt;
 
+	if (this->GetPosition().y > 800)
+		m_despawn = true;
+
 	// Bullets set to despawn if they hit ground level
-	if (m_position.y - this->GetBounds().height >= state->GetPlayer()->GetTerrainHeight() + 30)
+	if (m_position.y - this->GetBounds().height >= state->GetHeight(this->GetPosition().x, this->GetBounds().width) + 30)
 	{
 		if (!m_ground)
 		{

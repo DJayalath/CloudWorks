@@ -20,5 +20,5 @@ private:
 
 	void Move(float player_x, float dt, GameState* state);
 	void Jump(float dt);
-	void BulletCollisions(std::list<Bullet>* bullets);
+	void BulletCollisions(std::list<Bullet>* bullets, GameState* state);
 };
