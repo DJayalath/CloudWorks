@@ -1,0 +1,8 @@
+- End Menu
+- Main Menu
+- Text buffer with functions
+- User scores saved to file
+- Insertion sort score file
+- Read score file and display
+- Input struct
+- Pause Menu

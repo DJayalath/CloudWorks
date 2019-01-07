@@ -1,30 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{2feddab4-0fd1-427e-a059-1f43a6e44f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States">
+      <UniqueIdentifier>{3bd1e5bf-1fef-402b-9dd2-ef979b7b9ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\GameState">
+      <UniqueIdentifier>{3f42d27f-8298-4c09-8d4c-e155d41a6d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\EndState">
+      <UniqueIdentifier>{6c9d297a-11b9-45a7-ab28-e2cd33b5d91c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\MenuState">
+      <UniqueIdentifier>{d6c35bb7-6d67-44d3-a8d2-a6fd04363aa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\PauseState">
+      <UniqueIdentifier>{07702b4c-33d0-4051-9525-e821764497eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\ScoreState">
+      <UniqueIdentifier>{61fd6f8a-910a-4492-875c-1ae4510a556f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="EndGameState.cpp">
+      <Filter>Game\States\EndState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Game\States\MenuState</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenuState.cpp">
+      <Filter>Game\States\PauseState</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoresState.cpp">
+      <Filter>Game\States\ScoreState</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Game\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\States\GameState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="EndGameState.h">
+      <Filter>Game\States\EndState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Game\States\MenuState</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenuState.h">
+      <Filter>Game\States\PauseState</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoresState.h">
+      <Filter>Game\States\ScoreState</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgramState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Maths.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Changes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Iteration01 Class Diagram.cd">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
