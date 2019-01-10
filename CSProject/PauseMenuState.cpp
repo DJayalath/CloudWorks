@@ -7,7 +7,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 		std::cout << "ERROR: Failed to load font" << std::endl;
 
 	// Background Texture
-	bg_tex.loadFromFile("./res/PauseMenu.png");
+	bg_tex.loadFromFile("./res/backgrounds/pause.png");
 	m_background.setTexture(bg_tex);
 	pos = engine->GetWindow()->getView().getCenter();
 	pos.x -= 576 / 2;

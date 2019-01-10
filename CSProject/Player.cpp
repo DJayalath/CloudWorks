@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "Enemy.h"
 #include "GameState.h"
 #include "Maths.h"
 
@@ -16,55 +15,52 @@ Player::~Player() {}
 
 void Player::Update(GameState* state, double dt)
 {
-	Move((float) dt);
+	Move(state, (float) dt);
 	EntityCollisions(state);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		Attack(state);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		Attack(state, UP);
 }
 
-void Player::Attack(GameState* state)
+void Player::Attack(GameState* state, sf::Vector2f direction)
 {
 	// Request current time since clock was restarted
 	attack_time = attack_timer.getElapsedTime().asSeconds();
 
 	// Check if attack time exceeds cooldown
-	if (attack_time > 0.5)
+	if (attack_time > 1)
 	{
 		attack_timer.restart();
-		
-		// Correct player position to be relative to cursor position by subtracting camera distance
-		float player_x = this->GetPosition().x - (state->GetCamera()->GetCentre().x - 640);
-		sf::Vector2f player_pos_relative = sf::Vector2f(player_x, this->GetPosition().y);
-
-		// Calculate direction vector towards cursor from player
-		sf::Vector2f player_to_cursor = Maths::GetUnitVec(sf::Vector2f(1,1));
 
 		// Set spawn position of Bullet
-		sf::Vector2f spawn_pos = sf::Vector2f(this->GetPosition().x + 50, this->GetPosition().y - 10);
+		sf::Vector2f sprite_centre = this->GetPosition() +
+			sf::Vector2f(this->GetSprite().getGlobalBounds().width, this->GetSprite().getGlobalBounds().height) / 2.f;
+
+		sf::Vector2f spawn_pos = sprite_centre + 50.f * direction;
+		sf::Vector2f velocity = direction * 800.f + sf::Vector2f(this->GetVelocity().x, 0) * 2.f;
 
 		// Create new bullet and fire towards cursor from player
-		state->GetBullets()->push_back(Bullet(spawn_pos, sf::Vector2f(0.02f, 0.02f), state->GetAssets()->texture_map.at("Ball")));
-		state->GetBullets()->back().SetVelocity((player_to_cursor.x) * 250 + this->GetVelocity().x, (player_to_cursor.y) * 500 + this->GetVelocity().y);
+		state->GetBullets()->push_back(Bullet(spawn_pos, sf::Vector2f(0.02f, 0.02f), state->GetAssets().texture_map.at("Ball")));
+		state->GetBullets()->back().SetVelocity(velocity.x, velocity.y);
 	}
 }
 
 void Player::EntityCollisions(GameState* state)
 {
-	std::list<Enemy>* enemies = state->GetEnemies();
+	//std::list<Enemy>* enemies = state->GetEnemies();
 
-	// Loop through list of enemies
-	for (auto &&e : *enemies)
-	{
-		// Check for intersection between enemy and player
-		if (this->GetBounds().intersects(e.GetBounds()))
-		{
-			this->m_health = 0;
-		}
-	}
+	//// Loop through list of enemies
+	//for (auto &&e : *enemies)
+	//{
+	//	// Check for intersection between enemy and player
+	//	if (this->GetBounds().intersects(e.GetBounds()))
+	//	{
+	//		this->m_health = 0;
+	//	}
+	//}
 }
 
-void Player::Move(float dt)
+void Player::Move(GameState* state, float dt)
 {
 	// Check key pressed
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -82,36 +78,30 @@ void Player::Move(float dt)
 			m_velocity.x = 0;
 	}
 
-	if (m_position.y < m_terrain_height)
-		m_grounded = false;
+	// Apply gravity ALWAYS
+	//m_velocity.y += m_gravity * dt;
+	m_velocity.y += m_gravity * (m_fall_mult - 1) * dt;
 
-	if (m_grounded)
+	// Check key is pressed
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		// Check key is pressed
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		if (m_grounded)
 		{
 			// Apply impulse to jump
 			m_velocity.y += -m_acceljump;
 			// Player is no longer grounded
 			m_grounded = false;
+			state->GetAssets().sound_map.at("Jump").play();
 		}
-	}
-	else
-	{
-		// Apply gravity
-		m_velocity.y += m_gravity * dt;
-
-		// Check if player falls below ground height
-		if (m_position.y > m_terrain_height)
+		else if (m_velocity.y < 0)
 		{
-			// Cancel all vertical velocity
-			m_velocity.y = 0;
-			// Set player to ground height
-			m_position.y = m_terrain_height;
-			// Player is now fixed on ground
-			m_grounded = true;
+			m_velocity.y -= m_gravity * (m_jump_mult - 1) * dt;
 		}
 	}
+
+	// Fix for error causing start glitch
+	if (dt > 0.1)
+		m_velocity.y = 0;
 
 	// Apply velocity onto position
 	m_position += m_velocity * static_cast<float>(dt);

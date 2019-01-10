@@ -15,7 +15,7 @@ public:
 	~Camera();
 
 	sf::View GetView();
-	void Update(GameState* state);
+	void Update(GameState* state, double dt);
 	sf::Vector2f GetCentre() { return m_view.getCenter(); }
 
 	sf::Text GetDistText() { return m_dist_text; }
@@ -24,7 +24,7 @@ public:
 
 private:
 
-	void MoveCamera(Player* player);
+	void MoveCamera(Player* player, double dt);
 	void MoveText(Player* player);
 	void CheckBullets(std::list<Bullet>* bullets);
 

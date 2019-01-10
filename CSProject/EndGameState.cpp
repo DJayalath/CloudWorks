@@ -42,7 +42,7 @@ EndGameState::EndGameState(Engine* engine)
 		std::cout << "Failed to read highscores file" << std::endl;
 
 	// Background Texture
-	bg_tex.loadFromFile("./res/EndMenu.png");
+	bg_tex.loadFromFile("./res/backgrounds/game_over.png");
 	m_background.setTexture(bg_tex);
 	pos = engine->GetWindow()->getView().getCenter();
 	pos.x -= 576 / 2;
@@ -88,6 +88,8 @@ void EndGameState::HandleEvents(Engine* engine)
 {
 	if (engine->GetReleased(sf::Keyboard::Enter))
 	{
+		// If no index found, it must be the lowest score so should go to end of file
+		if (insertion_index == -1) insertion_index = m_file_buffer.size();
 		// Add current round record to vector
 		m_file_buffer.insert(m_file_buffer.begin() + insertion_index, engine->GetTextBuffer() + " " + std::to_string((int)engine->GetUserScore()));
 

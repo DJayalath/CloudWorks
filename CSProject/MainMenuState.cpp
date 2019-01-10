@@ -1,15 +1,23 @@
 #include "MainMenuState.h"
 #include "Engine.h"
+#include "Maths.h"
 
 MainMenuState::MainMenuState(Engine* engine)
 {
+	floating_clock.restart();
+
+	m_tex_cloudboy.loadFromFile("./res/textures/player.png");
+	m_cloudboy.setTexture(m_tex_cloudboy);
+	m_cloudboy.setScale(9.f, 9.f);
+	m_cloudboy.setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(300,-120));
+
 	sf::Vector2f pos;
 	sf::FloatRect text_rect;
 
 	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
 		std::cout << "ERROR: Failed to load font" << std::endl;
 
-	bg_tex.loadFromFile("./res/MainMenu.png");
+	bg_tex.loadFromFile("./res/backgrounds/main_menu.png");
 	m_background.setTexture(bg_tex);
 
 	// Start Text (DEFAULT)
@@ -43,6 +51,41 @@ MainMenuState::MainMenuState(Engine* engine)
 	pos = engine->GetWindow()->getView().getCenter();
 	pos.y += 60;
 	m_text[QUIT].setPosition(pos);
+
+	// Controls Text
+	for (auto &t : m_controls)
+	{
+		t.setFont(m_font);
+		t.setCharacterSize(18);
+		t.setColor(sf::Color::White);
+	}
+	// Controls Title
+	m_controls[0].setString("Controls");
+	m_controls[0].setColor(sf::Color::Yellow);
+	m_controls[0].setCharacterSize(24);
+	text_rect = m_controls[0].getLocalBounds();
+	m_controls[0].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
+	m_controls[0].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, -58));
+	// Line 1
+	m_controls[1].setString("W/S = Menu Up/Down");
+	text_rect = m_controls[1].getLocalBounds();
+	m_controls[1].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
+	m_controls[1].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, -28));
+	// Line 2
+	m_controls[2].setString("Enter = Continue");
+	text_rect = m_controls[2].getLocalBounds();
+	m_controls[2].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
+	m_controls[2].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, 2));
+	// Line 3
+	m_controls[3].setString("Escape = Pause/Return");
+	text_rect = m_controls[3].getLocalBounds();
+	m_controls[3].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
+	m_controls[3].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, 32));
+	// Line 4
+	m_controls[4].setString("W/A/S = Jump/Left/Right");
+	text_rect = m_controls[4].getLocalBounds();
+	m_controls[4].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
+	m_controls[4].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, 62));
 }
 
 void MainMenuState::HandleEvents(Engine* engine)
@@ -84,7 +127,9 @@ void MainMenuState::HandleEvents(Engine* engine)
 
 void MainMenuState::Update(Engine* engine, double dt)
 {
-
+	cloud_vel.y = sinf(Maths::GetRadians(floating_clock.getElapsedTime().asMilliseconds() / 5.f)) * 50;
+	cloud_vel.x = cosf(Maths::GetRadians(floating_clock.getElapsedTime().asMilliseconds() / 10.f)) * 20;
+	m_cloudboy.move(cloud_vel * static_cast<float>(dt));
 }
 
 void MainMenuState::Draw(Engine* engine)
@@ -93,4 +138,9 @@ void MainMenuState::Draw(Engine* engine)
 	engine->GetWindow()->draw(m_text[START]);
 	engine->GetWindow()->draw(m_text[HIGHSCORES]);
 	engine->GetWindow()->draw(m_text[QUIT]);
+
+	for (auto &t : m_controls)
+		engine->GetWindow()->draw(t);
+
+	engine->GetWindow()->draw(m_cloudboy);
 }

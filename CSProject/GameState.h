@@ -2,14 +2,16 @@
 
 #include "ProgramState.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Camera.h"
 #include "Bullet.h"
+#include "Bomber.h"
+#include "Bomb.h"
+#include "Spike.h"
 #include "AssetManager.h"
-#include "EnemyManager.h"
 #include "TerrainGenerator.h"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <list>
 
@@ -31,17 +33,11 @@ public:
 	void Update(Engine* engine, double dt);
 	void Draw(Engine* engine);
 
-	float GetHeight(int x, int width)
-	{
-		return m_terrain_generator.GetHeight(x, width, m_chunks.back().GetBounds().width);
-	}
-
 	Player* GetPlayer();
 	Camera* GetCamera() { return &m_camera; }
 	std::list<Bullet>* GetBullets() { return &m_bullets; }
-	std::list<Enemy>* GetEnemies() { return &m_enemies; }
-	double GetDeltaTime() { return m_dt; }
-	AssetManager* GetAssets() { return &m_assets; }
+	std::vector<Bomb>& GetBombs() { return m_bombs; }
+	AssetManager& GetAssets() { return m_assets; }
 
 private:
 
@@ -49,11 +45,14 @@ private:
 	sf::Sprite m_sp_background;
 	sf::Texture m_tex_background;
 
-	EnemyManager m_enemy_manager;
 	std::list<Bullet> m_bullets;
-	std::list<Enemy> m_enemies;
+	std::vector<Bomber> m_bombers;
+	std::vector<Bomb> m_bombs;
+	std::vector<Spike> m_spikes;
 
-	double m_dt;
+	sf::Clock m_timer;
+	float m_time;
+
 	Player m_player;
 	Camera m_camera;
 

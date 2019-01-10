@@ -31,6 +31,13 @@ private:
 	sf::Sprite m_background;
 	sf::Font m_font;
 	sf::Text m_text[NUM_BUTTONS];
+	static const int LINES = 5;
+	sf::Text m_controls[LINES];
+
+	sf::Clock floating_clock;
+	sf::Sprite m_cloudboy;
+	sf::Texture m_tex_cloudboy;
+	sf::Vector2f cloud_vel;
 
 	unsigned int m_selected = static_cast<unsigned int>(STATE_GAME);
 

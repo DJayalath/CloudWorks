@@ -22,12 +22,20 @@ public:
 	void Update(GameState* state, double dt) override;
 	int& EnemiesKilled() { return enemies_killed; }
 	int GetTime() { return game_timer.getElapsedTime().asSeconds(); }
+	bool& Grounded() { return m_grounded; }
+
+	void SetHealth(float h) { m_health = h; }
 
 private:
 
-	void Move(float dt);
+	sf::Vector2f UP = sf::Vector2f(0, -1);
+	sf::Vector2f LEFT = sf::Vector2f(-1, 0);
+	sf::Vector2f RIGHT = sf::Vector2f(1, 0);
+	sf::Vector2f DOWN = sf::Vector2f(0, -1);
+
+	void Move(GameState* state, float dt);
 	void EntityCollisions(GameState* state);
-	void Attack(GameState* state);
+	void Attack(GameState* state, sf::Vector2f direction);
 
 	void Accelerate(float& velocity, int direction, float dt);
 
@@ -41,8 +49,10 @@ private:
 	int enemies_killed = 0;
 
 
-	const float m_acceljump = 650.f;
+	const float m_acceljump = 500.f;
 	const float m_gravity = 1500.f;
+	const float m_fall_mult = 2.5f;
+	const float m_jump_mult = 1.9f;
 
 
 	// Misc.

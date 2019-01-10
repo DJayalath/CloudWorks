@@ -6,3 +6,9 @@
 - Read score file and display
 - Input struct
 - Pause Menu
+- Iterater less than 0 if no smaller item found!
+- Fixed start glitch with teleport death using min
+- Jumping change for more fun physics engine
+- Introduction of spikes
+- Fixing spawning too close
+- SOUNDS!

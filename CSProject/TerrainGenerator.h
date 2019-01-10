@@ -35,20 +35,8 @@ public:
 	}
 
 	void Update(GameState* state, std::list<Plank>& m_planks);
-	float GetHeight(int x, int object_width, int width)
-	{
-		for (auto& i : empty_space)
-		{
-			if (x >= i && x + object_width <= i + width)
-				return 900;
-		}
-
-		return 560;
-	}
 
 private:
 	static sf::Texture m_tex;
 	float next_spawn = 0;
-	std::vector<float> empty_space;
-	bool last_empty = false;
 };

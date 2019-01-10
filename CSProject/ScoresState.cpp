@@ -10,7 +10,7 @@ ScoresState::ScoresState(Engine* engine)
 		std::cout << "ERROR: Failed to load font" << std::endl;
 	}
 
-	bg_tex.loadFromFile("./res/ScoreMenu.png");
+	bg_tex.loadFromFile("./res/backgrounds/high_scores.png");
 	m_background.setTexture(bg_tex);
 
 	sf::Vector2f pos = engine->GetWindow()->getView().getCenter();

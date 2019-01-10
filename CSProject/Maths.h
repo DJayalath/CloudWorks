@@ -16,4 +16,9 @@ namespace Maths
 		float divisor = 1.f / Maths::GetMagnitude(v);
 		return v * divisor;
 	}
+
+	inline float GetRadians(float degrees)
+	{
+		return (degrees / 360.f) * 6.18f;
+	}
 };

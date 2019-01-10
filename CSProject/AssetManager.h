@@ -4,26 +4,30 @@
 #include <string>
 #include <utility>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class AssetManager
 {
 public:
-
-	AssetManager()
-	{
-		tex_sprite.loadFromFile("./res/PiskelSprite.png");
-		texture_map.insert(std::make_pair("Sprite", tex_sprite));
-		tex_ball.loadFromFile("./res/Ball.png");
-		texture_map.insert(std::make_pair("Ball", tex_ball));
-		tex_player.loadFromFile("./res/Player.png");
-		texture_map.insert(std::make_pair("Player", tex_player));
-	}
+	AssetManager();
 
 	std::map<std::string, sf::Texture> texture_map;
+	std::map<std::string, sf::Sound> sound_map;
 
 private:
 
-	sf::Texture tex_sprite;
 	sf::Texture tex_ball;
 	sf::Texture tex_player;
+	sf::Texture tex_bomber;
+	sf::Texture tex_anvil;
+	sf::Texture tex_spike;
+
+	sf::SoundBuffer hit;
+	sf::Sound sound_hit;
+	sf::SoundBuffer jump;
+	sf::Sound sound_jump;
+	sf::SoundBuffer lose;
+	sf::Sound sound_lose;
+	sf::SoundBuffer blip;
+	sf::Sound sound_blip;
 };

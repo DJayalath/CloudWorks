@@ -31,9 +31,9 @@ Camera::Camera() :
 }
 Camera::~Camera() {}
 
-void Camera::Update(GameState* state)
+void Camera::Update(GameState* state, double dt)
 {
-	MoveCamera(state->GetPlayer());
+	MoveCamera(state->GetPlayer(), dt);
 	MoveText(state->GetPlayer());
 	CheckBullets(state->GetBullets());
 }
@@ -63,7 +63,7 @@ void Camera::MoveText(Player* player)
 	m_time_text.setPosition(m_view.getCenter().x - 250, m_view.getCenter().y - 350);
 }
 
-void Camera::MoveCamera(Player* player)
+void Camera::MoveCamera(Player* player, double dt)
 {
 	/* Camera Control
 	- If player moves beyond camera centre, the camera moves with player
@@ -82,9 +82,12 @@ void Camera::MoveCamera(Player* player)
 	eliminating their horizontal velocity */
 	if (player_posx < cam_edgex)
 	{
-		player->SetVelocity(0, player->GetVelocity().y);
 		player->SetPosition(cam_edgex, player->GetPosition().y);
 	}
+
+	// Naturally move camera all the time to keep player moving forward
+	m_view.move(sf::Vector2f(50 * static_cast<float>(dt), 0));
+
 }
 
 sf::View Camera::GetView()

@@ -5,7 +5,7 @@ sf::Texture TerrainGenerator::m_tex;
 
 TerrainGenerator::TerrainGenerator()
 {
-	m_tex.loadFromFile("./res/wooden_plank.png");
+	m_tex.loadFromFile("./res/textures/wooden_plank.png");
 }
 
 void TerrainGenerator::Update(GameState* state, std::list<Plank>& m_planks)
@@ -15,21 +15,25 @@ void TerrainGenerator::Update(GameState* state, std::list<Plank>& m_planks)
 		if (state->GetPlayer()->GetPosition().x - 900 > m_planks.front().GetPosition().x)
 			m_planks.erase(m_planks.begin());
 
-		if (rand() % 2 != 0 || last_empty)
-		{
-			
-			CreateNewTerrain(m_planks);
-			last_empty = false;
-		}
-		else
-		{
-			empty_space.push_back(next_spawn);
-			next_spawn += m_planks.back().GetBounds().width;
-			last_empty = true;
-		}
+		CreateNewTerrain(m_planks);
 	}
 
-	if (!empty_space.empty())
-		if (empty_space.front() + 1280 < state->GetPlayer()->GetPosition().x)
-			empty_space.erase(empty_space.begin());
+	for (auto& plank : m_planks)
+	{	
+		sf::FloatRect result;
+		if (state->GetPlayer()->GetSprite().getGlobalBounds().intersects(plank.GetSprite().getGlobalBounds(), result))
+		{
+			if (state->GetPlayer()->GetSprite().getPosition().y + state->GetPlayer()->GetSprite().getGlobalBounds().height / 2.f < plank.GetSprite().getPosition().y - plank.GetSprite().getGlobalBounds().height)
+			{
+				state->GetPlayer()->SetPosition(state->GetPlayer()->GetPosition().x, state->GetPlayer()->GetPosition().y - result.height);
+				state->GetPlayer()->SetVelocity(state->GetPlayer()->GetVelocity().x, 0.f);
+				if (!state->GetPlayer()->Grounded())
+				{
+					state->GetPlayer()->Grounded() = true;
+				}
+			}
+			else
+				state->GetPlayer()->SetVelocity(0.f, state->GetPlayer()->GetVelocity().y);
+		}
+	}
 }
