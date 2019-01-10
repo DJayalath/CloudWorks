@@ -69,6 +69,7 @@ void ScoresState::HandleEvents(Engine* engine)
 {
 	if (engine->GetReleased(sf::Keyboard::Escape))
 	{
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		engine->ChangeState(STATE_MAINMENU);
 	}
 }

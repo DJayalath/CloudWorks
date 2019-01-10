@@ -9,7 +9,7 @@ bool DespawnBomber(Bomber& b) { return b.GetDespawn(); }
 bool DespawnBomb(Bomb& b) { return b.GetDespawn(); }
 
 GameState::GameState() :
-	m_player(sf::Vector2f(400, 400), sf::Vector2f(3.f, 3.f), m_assets.texture_map.at("Player"))
+	m_player(sf::Vector2f(400, 400), sf::Vector2f(3.f, 3.f), AssetManager::m_textures[AssetManager::PLAYER])
 {
 }
 
@@ -30,23 +30,24 @@ void GameState::Init()
 	// Generate 16 initial chunks...
 	for (int i = 0; i < 16; i++)
 		m_terrain_generator.CreateNewTerrain(m_chunks);
+
+	// PLAY THE MUSIC!
+	AssetManager::m_music[AssetManager::MAIN].play();
 }
 
 void GameState::Cleanup() {}
 void GameState::Pause()
 {
-	m_pause = true;
 }
 void GameState::Resume()
 {
-	m_pause = false;
 }
 
 void GameState::HandleEvents(Engine* engine)
 {
 	if (engine->GetReleased(sf::Keyboard::Escape))
 	{
-		m_assets.sound_map.at("Blip").play();
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		engine->PushState(STATE_PAUSE);
 	}
 }
@@ -89,7 +90,7 @@ void GameState::Update(Engine* engine, double dt)
 		{ 
 			if (b.GetSprite().getGlobalBounds().intersects(p.GetSprite().getGlobalBounds()))
 			{
-				m_assets.sound_map.at("Hit").play();
+				AssetManager::m_sounds[AssetManager::HIT].play();
 				return true;
 			}
 		}), m_chunks.end());
@@ -138,7 +139,7 @@ void GameState::Update(Engine* engine, double dt)
 					break;
 				}
 			if (valid_spawn)
-				m_bombers.push_back(Bomber(m_camera.GetCentre() + sf::Vector2f(800, -200), sf::Vector2f(0.3f, 0.3f), m_assets.texture_map.at("Bomber")));
+				m_bombers.push_back(Bomber(m_camera.GetCentre() + sf::Vector2f(800, -200), sf::Vector2f(0.3f, 0.3f), AssetManager::m_textures[AssetManager::BOMBER]));
 		}
 		if (rand() % 5 == 0)
 		{
@@ -150,7 +151,7 @@ void GameState::Update(Engine* engine, double dt)
 					break;
 				}
 			if (valid_spawn)
-				m_spikes.push_back(Spike(sf::Vector2f(m_camera.GetCentre().x + 800, 550), sf::Vector2f(2.5f, 2.5f), m_assets.texture_map.at("Spike")));
+				m_spikes.push_back(Spike(sf::Vector2f(m_camera.GetCentre().x + 800, 550), sf::Vector2f(2.5f, 2.5f), AssetManager::m_textures[AssetManager::SPIKE]));
 		}
 	}
 
@@ -163,7 +164,6 @@ void GameState::Update(Engine* engine, double dt)
 	if (m_player.GetHealth() == 0 || m_player.GetPosition().y > 720)
 	{
 		engine->SetUserScore(m_player.GetPosition().x * 0.1 + 10 * m_player.GetTime() + 100 * m_player.EnemiesKilled());
-		m_assets.sound_map.at("Lose").play();
 		engine->PushState(STATE_ENDGAME);
 	}
 }

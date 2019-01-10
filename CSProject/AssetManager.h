@@ -11,23 +11,18 @@ class AssetManager
 public:
 	AssetManager();
 
-	std::map<std::string, sf::Texture> texture_map;
-	std::map<std::string, sf::Sound> sound_map;
+	// Textures
+	enum TextureType {BALL, PLAYER, BOMBER, ANVIL, SPIKE, MAX_TEXTURES};
+	static sf::Texture m_textures[MAX_TEXTURES];
+	
+	// Sounds
+	enum SoundType { HIT, JUMP, LOSE, BLIP, SWITCH, MAX_SOUNDS };
+	static sf::Sound m_sounds[MAX_SOUNDS];
+
+	// Music
+	enum MusicType {MAIN, MAX_MUSIC};
+	static sf::Music m_music[MAX_MUSIC];
 
 private:
-
-	sf::Texture tex_ball;
-	sf::Texture tex_player;
-	sf::Texture tex_bomber;
-	sf::Texture tex_anvil;
-	sf::Texture tex_spike;
-
-	sf::SoundBuffer hit;
-	sf::Sound sound_hit;
-	sf::SoundBuffer jump;
-	sf::Sound sound_jump;
-	sf::SoundBuffer lose;
-	sf::Sound sound_lose;
-	sf::SoundBuffer blip;
-	sf::Sound sound_blip;
+	static sf::SoundBuffer m_soundbuffer[MAX_SOUNDS];
 };

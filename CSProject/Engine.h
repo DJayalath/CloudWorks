@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include "AssetManager.h"
 
 #include "ProgramState.h"
 
@@ -48,6 +49,7 @@ public:
 private:
 
 	double user_score = 0;
+	AssetManager m_assets;
 
 	bool use_text_buffer = false;
 	std::string text_buffer;

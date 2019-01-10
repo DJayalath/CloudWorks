@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "GameState.h"
 #include "Maths.h"
+#include "AssetManager.h"
 
 #include <iostream>
 
@@ -40,7 +41,7 @@ void Player::Attack(GameState* state, sf::Vector2f direction)
 		sf::Vector2f velocity = direction * 800.f + sf::Vector2f(this->GetVelocity().x, 0) * 2.f;
 
 		// Create new bullet and fire towards cursor from player
-		state->GetBullets()->push_back(Bullet(spawn_pos, sf::Vector2f(0.02f, 0.02f), state->GetAssets().texture_map.at("Ball")));
+		state->GetBullets()->push_back(Bullet(spawn_pos, sf::Vector2f(0.02f, 0.02f), AssetManager::m_textures[AssetManager::BALL]));
 		state->GetBullets()->back().SetVelocity(velocity.x, velocity.y);
 	}
 }
@@ -91,7 +92,7 @@ void Player::Move(GameState* state, float dt)
 			m_velocity.y += -m_acceljump;
 			// Player is no longer grounded
 			m_grounded = false;
-			state->GetAssets().sound_map.at("Jump").play();
+			AssetManager::m_sounds[AssetManager::JUMP].play();
 		}
 		else if (m_velocity.y < 0)
 		{

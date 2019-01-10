@@ -1,8 +1,12 @@
 #include "PauseMenuState.h"
+#include "AssetManager.h"
 #include "Engine.h"
 
 PauseMenuState::PauseMenuState(Engine* engine)
 {
+
+	AssetManager::m_sounds[AssetManager::BLIP].play();
+
 	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
 		std::cout << "ERROR: Failed to load font" << std::endl;
 
@@ -48,16 +52,19 @@ void PauseMenuState::HandleEvents(Engine* engine)
 {
 	if (engine->GetReleased(sf::Keyboard::W) && m_selected > 0)
 	{
+		AssetManager::m_sounds[AssetManager::SWITCH].play();
 		m_text[m_selected].setColor(sf::Color(93, 87, 107));
 		m_text[--m_selected].setColor(sf::Color(244, 66, 66));
 	}
 	else if (engine->GetReleased(sf::Keyboard::S) && m_selected < NUM_BUTTONS - 1)
 	{
+		AssetManager::m_sounds[AssetManager::SWITCH].play();
 		m_text[m_selected].setColor(sf::Color(93, 87, 107));
 		m_text[++m_selected].setColor(sf::Color(244, 66, 66));
 	}
 	else if (engine->GetReleased(sf::Keyboard::Enter))
 	{
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		switch (m_selected)
 		{
 		case RESUME:
@@ -76,7 +83,10 @@ void PauseMenuState::HandleEvents(Engine* engine)
 		}
 	}
 	else if (engine->GetReleased(sf::Keyboard::Escape))
+	{
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		engine->PopState();
+	}
 }
 
 void PauseMenuState::Update(Engine* engine, double dt)

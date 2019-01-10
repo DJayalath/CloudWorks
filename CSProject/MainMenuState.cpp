@@ -93,18 +93,21 @@ void MainMenuState::HandleEvents(Engine* engine)
 
 	if (engine->GetReleased(sf::Keyboard::S) && m_selected < NUM_BUTTONS - 1)
 	{
-			m_text[m_selected].setColor(m_grey);
-			m_text[++m_selected].setColor(m_red);
+		AssetManager::m_sounds[AssetManager::SWITCH].play();
+		m_text[m_selected].setColor(m_grey);
+		m_text[++m_selected].setColor(m_red);
 	}
 
 	if (engine->GetReleased(sf::Keyboard::W) && m_selected > 0)
 	{
-			m_text[m_selected].setColor(m_grey);
-			m_text[--m_selected].setColor(m_red);
+		AssetManager::m_sounds[AssetManager::SWITCH].play();
+		m_text[m_selected].setColor(m_grey);
+		m_text[--m_selected].setColor(m_red);
 	}
 
 	if (engine->GetReleased(sf::Keyboard::Enter))
 	{
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		switch (m_selected)
 		{
 		case QUIT:

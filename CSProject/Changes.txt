@@ -12,3 +12,4 @@
 - Introduction of spikes
 - Fixing spawning too close
 - SOUNDS!
+- MASSIVE speed increase from static declaration

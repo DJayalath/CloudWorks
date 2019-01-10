@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "ProgramState.h"
 class PauseMenuState :
 	public ProgramState

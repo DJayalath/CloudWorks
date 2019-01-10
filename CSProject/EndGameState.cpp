@@ -5,6 +5,9 @@
 
 EndGameState::EndGameState(Engine* engine)
 {
+	AssetManager::m_music[AssetManager::MAIN].stop();
+	AssetManager::m_sounds[AssetManager::LOSE].play();
+
 	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
 	{
 		std::cout << "ERROR: Failed to load font" << std::endl;
@@ -88,6 +91,7 @@ void EndGameState::HandleEvents(Engine* engine)
 {
 	if (engine->GetReleased(sf::Keyboard::Enter))
 	{
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		// If no index found, it must be the lowest score so should go to end of file
 		if (insertion_index == -1) insertion_index = m_file_buffer.size();
 		// Add current round record to vector
@@ -110,6 +114,7 @@ void EndGameState::HandleEvents(Engine* engine)
 	}
 	else if (engine->GetReleased(sf::Keyboard::Escape))
 	{
+		AssetManager::m_sounds[AssetManager::BLIP].play();
 		engine->CloseTextBuffer();
 		// Reset view
 		engine->GetWindow()->setView(engine->GetWindow()->getDefaultView());

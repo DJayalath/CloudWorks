@@ -7,7 +7,6 @@
 #include "Bomber.h"
 #include "Bomb.h"
 #include "Spike.h"
-#include "AssetManager.h"
 #include "TerrainGenerator.h"
 
 #include <SFML/Graphics.hpp>
@@ -37,29 +36,30 @@ public:
 	Camera* GetCamera() { return &m_camera; }
 	std::list<Bullet>* GetBullets() { return &m_bullets; }
 	std::vector<Bomb>& GetBombs() { return m_bombs; }
-	AssetManager& GetAssets() { return m_assets; }
 
 private:
 
-	AssetManager m_assets;
+	// Set background
 	sf::Sprite m_sp_background;
 	sf::Texture m_tex_background;
 
+	// Vectors/Lists of entities
 	std::list<Bullet> m_bullets;
 	std::vector<Bomber> m_bombers;
 	std::vector<Bomb> m_bombs;
 	std::vector<Spike> m_spikes;
+	std::list<Plank> m_chunks;
+	// Single player entity
+	Player m_player;
 
+	// Game timer
 	sf::Clock m_timer;
 	float m_time;
 
-	Player m_player;
+	// Game camera
 	Camera m_camera;
-
-	bool m_pause = false;
-
+	// Terrain generator
 	TerrainGenerator m_terrain_generator;
-	std::list<Plank> m_chunks;
 
 };
 

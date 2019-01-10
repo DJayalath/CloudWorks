@@ -1,5 +1,6 @@
 #include "Bomber.h"
 #include "GameState.h"
+#include "AssetManager.h"
 
 sf::Clock Bomber::m_timer;
 
@@ -27,7 +28,7 @@ void Bomber::Update(GameState* state, double dt)
 	{
 		state->GetBombs().push_back(Bomb(m_position + sf::Vector2f(m_sprite.getGlobalBounds().width,
 			m_sprite.getGlobalBounds().height) / 2.f + sf::Vector2f(0, 25),
-			sf::Vector2f(0.01f, 0.01f), state->GetAssets().texture_map.at("Anvil")));
+			sf::Vector2f(0.01f, 0.01f), AssetManager::m_textures[AssetManager::ANVIL]));
 		m_state = DROPPED;
 	}
 	else if (m_state == DROPPED && m_timer.getElapsedTime().asMilliseconds() - m_pause_time > 1000)
