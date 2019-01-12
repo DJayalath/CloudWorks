@@ -3,15 +3,12 @@
 
 #include <iostream>
 
-//IDEA: Moving conveyor belt instead of grass? Randomly generate obstacles rather than terrain?
-bool DespawnBullet(Bullet& b) { return b.GetDespawn(); }
 bool DespawnBomber(Bomber& b) { return b.GetDespawn(); }
 bool DespawnBomb(Bomb& b) { return b.GetDespawn(); }
 
 GameState::GameState() :
 	m_player(sf::Vector2f(400, 400), sf::Vector2f(3.f, 3.f), AssetManager::m_textures[AssetManager::PLAYER])
-{
-}
+{}
 
 void GameState::Init()
 {
@@ -51,33 +48,12 @@ void GameState::HandleEvents(Engine* engine)
 		engine->PushState(STATE_PAUSE);
 	}
 }
-void GameState::Update(Engine* engine, double dt)
+void GameState::Update(Engine* engine, float dt)
 {
 	m_player.Update(this, dt);
 	m_camera.Update(this, dt);
 
 	sf::FloatRect result;
-	for (auto &b : m_bullets)
-	{
-		// Ground collision tests
-		for (auto &c : m_chunks)
-			if (b.GetSprite().getGlobalBounds().intersects(c.GetSprite().getGlobalBounds(), result))
-				b.GroundCollision(result.height);
-
-		// Bomber collision and removal tests
-		m_bombers.erase(std::remove_if(m_bombers.begin(), m_bombers.end(),
-			[&](Bomber& s) 
-		{
-			if (b.GetSprite().getGlobalBounds().intersects(s.GetSprite().getGlobalBounds()))
-			{
-				m_player.EnemiesKilled() += 1;
-				return true;
-			}
-			return false;
-		}), m_bombers.end());
-
-		b.Update(this, dt);
-	}
 
 	for (auto &b : m_bombers)
 		b.Update(this, dt);
@@ -93,6 +69,7 @@ void GameState::Update(Engine* engine, double dt)
 				AssetManager::m_sounds[AssetManager::HIT].play();
 				return true;
 			}
+			return false;
 		}), m_chunks.end());
 
 		// Player colision
@@ -129,7 +106,8 @@ void GameState::Update(Engine* engine, double dt)
 	if ((int) m_timer.getElapsedTime().asMilliseconds() > 500)
 	{
 		m_timer.restart();
-		if (rand() % 9 == 0)
+		int difficulty = std::min((int) m_camera.GetCentre().x / 5000, 4);
+		if (rand() % (9 - difficulty) == 0)
 		{
 			bool valid_spawn = true;
 			for (auto &b : m_bombers)
@@ -141,7 +119,7 @@ void GameState::Update(Engine* engine, double dt)
 			if (valid_spawn)
 				m_bombers.push_back(Bomber(m_camera.GetCentre() + sf::Vector2f(800, -200), sf::Vector2f(0.3f, 0.3f), AssetManager::m_textures[AssetManager::BOMBER]));
 		}
-		if (rand() % 5 == 0)
+		if (rand() % (5 - difficulty) == 0)
 		{
 			bool valid_spawn = true;
 			for (auto &s : m_spikes)
@@ -155,7 +133,6 @@ void GameState::Update(Engine* engine, double dt)
 		}
 	}
 
-	m_bullets.remove_if(DespawnBullet);
 	std::remove_if(m_bombers.begin(), m_bombers.end(), DespawnBomber);
 	std::remove_if(m_bombs.begin(), m_bombs.end(), DespawnBomb);
 	std::remove_if(m_spikes.begin(), m_spikes.end(), [=](Spike& s) 
@@ -163,13 +140,14 @@ void GameState::Update(Engine* engine, double dt)
 
 	if (m_player.GetHealth() == 0 || m_player.GetPosition().y > 720)
 	{
-		engine->SetUserScore(m_player.GetPosition().x * 0.1 + 10 * m_player.GetTime() + 100 * m_player.EnemiesKilled());
+		engine->SetUserScore(m_player.GetPosition().x * 0.1f + 50.f * m_player.GetTime());
 		engine->PushState(STATE_ENDGAME);
 	}
 }
 void GameState::Draw(Engine* engine)
 {
 	engine->GetWindow()->setView(m_camera.GetView());
+	// Draw background sprite
 	engine->GetWindow()->draw(m_sp_background);
 	engine->GetWindow()->draw(m_player.GetSprite());
 
@@ -177,9 +155,6 @@ void GameState::Draw(Engine* engine)
 	engine->GetWindow()->draw(m_camera.GetDistText());
 	engine->GetWindow()->draw(m_camera.GetHealthText());
 	engine->GetWindow()->draw(m_camera.GetTimeText());
-
-	for (auto &b : m_bullets)
-		engine->GetWindow()->draw(b.GetSprite());
 
 	for (auto &b : m_bombers)
 		engine->GetWindow()->draw(b.GetSprite());

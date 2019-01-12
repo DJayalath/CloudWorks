@@ -74,7 +74,7 @@ void ScoresState::HandleEvents(Engine* engine)
 	}
 }
 
-void ScoresState::Update(Engine* engine, double dt)
+void ScoresState::Update(Engine* engine, float dt)
 {
 }
 

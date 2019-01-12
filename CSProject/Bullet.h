@@ -10,12 +10,12 @@ public:
 
 	bool GetDespawn() { return m_despawn; }
 	void SetDespawn(bool state) { m_despawn = state; }
-	void Update(GameState* state, double dt) override;
+	void Update(GameState* state, float dt) override;
 
 	void GroundCollision(float intersect_height)
 	{
 		m_position.y -= intersect_height;
-		m_velocity.y = -m_velocity.y * 0.9;
+		m_velocity.y = -m_velocity.y * 0.9f;
 		m_collisions += 1;
 	}
 

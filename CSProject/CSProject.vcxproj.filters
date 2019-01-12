@@ -134,9 +134,13 @@
     <Text Include="Changes.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Notes.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Iteration01 Class Diagram.cd">
+    <None Include="Iteration02.cd">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Iteration01.cd">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -21,7 +21,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 	// DEFAULT
 	m_text[RESUME].setFont(m_font);
 	m_text[RESUME].setCharacterSize(36);
-	m_text[RESUME].setColor(sf::Color(244, 66, 66));
+	m_text[RESUME].setFillColor(sf::Color(244, 66, 66));
 	m_text[RESUME].setString("RESUME");
 	text_rect = m_text[RESUME].getLocalBounds();
 	m_text[RESUME].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -31,7 +31,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 
 	m_text[RESTART].setFont(m_font);
 	m_text[RESTART].setCharacterSize(36);
-	m_text[RESTART].setColor(sf::Color(93, 87, 107));
+	m_text[RESTART].setFillColor(sf::Color(93, 87, 107));
 	m_text[RESTART].setString("RESTART");
 	text_rect = m_text[RESTART].getLocalBounds();
 	m_text[RESTART].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -40,7 +40,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 
 	m_text[MENU].setFont(m_font);
 	m_text[MENU].setCharacterSize(36);
-	m_text[MENU].setColor(sf::Color(93, 87, 107));
+	m_text[MENU].setFillColor(sf::Color(93, 87, 107));
 	m_text[MENU].setString("MENU");
 	text_rect = m_text[MENU].getLocalBounds();
 	m_text[MENU].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -53,14 +53,14 @@ void PauseMenuState::HandleEvents(Engine* engine)
 	if (engine->GetReleased(sf::Keyboard::W) && m_selected > 0)
 	{
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
-		m_text[m_selected].setColor(sf::Color(93, 87, 107));
-		m_text[--m_selected].setColor(sf::Color(244, 66, 66));
+		m_text[m_selected].setFillColor(sf::Color(93, 87, 107));
+		m_text[--m_selected].setFillColor(sf::Color(244, 66, 66));
 	}
 	else if (engine->GetReleased(sf::Keyboard::S) && m_selected < NUM_BUTTONS - 1)
 	{
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
-		m_text[m_selected].setColor(sf::Color(93, 87, 107));
-		m_text[++m_selected].setColor(sf::Color(244, 66, 66));
+		m_text[m_selected].setFillColor(sf::Color(93, 87, 107));
+		m_text[++m_selected].setFillColor(sf::Color(244, 66, 66));
 	}
 	else if (engine->GetReleased(sf::Keyboard::Enter))
 	{
@@ -89,7 +89,7 @@ void PauseMenuState::HandleEvents(Engine* engine)
 	}
 }
 
-void PauseMenuState::Update(Engine* engine, double dt)
+void PauseMenuState::Update(Engine* engine, float dt)
 {
 
 }

@@ -3,7 +3,6 @@
 #include "ProgramState.h"
 #include "Player.h"
 #include "Camera.h"
-#include "Bullet.h"
 #include "Bomber.h"
 #include "Bomb.h"
 #include "Spike.h"
@@ -29,12 +28,11 @@ public:
 	void Resume();
 
 	void HandleEvents(Engine* engine);
-	void Update(Engine* engine, double dt);
+	void Update(Engine* engine, float dt);
 	void Draw(Engine* engine);
 
 	Player* GetPlayer();
 	Camera* GetCamera() { return &m_camera; }
-	std::list<Bullet>* GetBullets() { return &m_bullets; }
 	std::vector<Bomb>& GetBombs() { return m_bombs; }
 
 private:
@@ -44,7 +42,6 @@ private:
 	sf::Texture m_tex_background;
 
 	// Vectors/Lists of entities
-	std::list<Bullet> m_bullets;
 	std::vector<Bomber> m_bombers;
 	std::vector<Bomb> m_bombs;
 	std::vector<Spike> m_spikes;

@@ -10,7 +10,7 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::Update(GameState* state, double dt)
+void Bullet::Update(GameState* state, float dt)
 {
 	// Bullets fall with gravity
 	m_velocity.y += m_gravity * (float) dt;

@@ -23,7 +23,7 @@ MainMenuState::MainMenuState(Engine* engine)
 	// Start Text (DEFAULT)
 	m_text[START].setFont(m_font);
 	m_text[START].setCharacterSize(36);
-	m_text[START].setColor(sf::Color(244, 66, 66));
+	m_text[START].setFillColor(sf::Color(244, 66, 66));
 	m_text[START].setString("START GAME");
 	text_rect = m_text[START].getLocalBounds();
 	m_text[START].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -34,7 +34,7 @@ MainMenuState::MainMenuState(Engine* engine)
 	// Quit Text
 	m_text[HIGHSCORES].setFont(m_font);
 	m_text[HIGHSCORES].setCharacterSize(36);
-	m_text[HIGHSCORES].setColor(sf::Color(93, 87, 107));
+	m_text[HIGHSCORES].setFillColor(sf::Color(93, 87, 107));
 	m_text[HIGHSCORES].setString("HIGHSCORES");
 	text_rect = m_text[HIGHSCORES].getLocalBounds();
 	m_text[HIGHSCORES].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -44,7 +44,7 @@ MainMenuState::MainMenuState(Engine* engine)
 	// Quit Text
 	m_text[QUIT].setFont(m_font);
 	m_text[QUIT].setCharacterSize(36);
-	m_text[QUIT].setColor(sf::Color(93, 87, 107));
+	m_text[QUIT].setFillColor(sf::Color(93, 87, 107));
 	m_text[QUIT].setString("QUIT GAME");
 	text_rect = m_text[QUIT].getLocalBounds();
 	m_text[QUIT].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -57,11 +57,11 @@ MainMenuState::MainMenuState(Engine* engine)
 	{
 		t.setFont(m_font);
 		t.setCharacterSize(18);
-		t.setColor(sf::Color::White);
+		t.setFillColor(sf::Color::White);
 	}
 	// Controls Title
 	m_controls[0].setString("Controls");
-	m_controls[0].setColor(sf::Color::Yellow);
+	m_controls[0].setFillColor(sf::Color::Yellow);
 	m_controls[0].setCharacterSize(24);
 	text_rect = m_controls[0].getLocalBounds();
 	m_controls[0].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
@@ -94,15 +94,15 @@ void MainMenuState::HandleEvents(Engine* engine)
 	if (engine->GetReleased(sf::Keyboard::S) && m_selected < NUM_BUTTONS - 1)
 	{
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
-		m_text[m_selected].setColor(m_grey);
-		m_text[++m_selected].setColor(m_red);
+		m_text[m_selected].setFillColor(m_grey);
+		m_text[++m_selected].setFillColor(m_red);
 	}
 
 	if (engine->GetReleased(sf::Keyboard::W) && m_selected > 0)
 	{
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
-		m_text[m_selected].setColor(m_grey);
-		m_text[--m_selected].setColor(m_red);
+		m_text[m_selected].setFillColor(m_grey);
+		m_text[--m_selected].setFillColor(m_red);
 	}
 
 	if (engine->GetReleased(sf::Keyboard::Enter))
@@ -128,11 +128,11 @@ void MainMenuState::HandleEvents(Engine* engine)
 		engine->GetWindow()->close();
 }
 
-void MainMenuState::Update(Engine* engine, double dt)
+void MainMenuState::Update(Engine* engine, float dt)
 {
 	cloud_vel.y = sinf(Maths::GetRadians(floating_clock.getElapsedTime().asMilliseconds() / 5.f)) * 50;
 	cloud_vel.x = cosf(Maths::GetRadians(floating_clock.getElapsedTime().asMilliseconds() / 10.f)) * 20;
-	m_cloudboy.move(cloud_vel * static_cast<float>(dt));
+	m_cloudboy.move(cloud_vel * dt);
 }
 
 void MainMenuState::Draw(Engine* engine)

@@ -5,7 +5,7 @@ class Spike :
 {
 public:
 	Spike(sf::Vector2f position, sf::Vector2f scale, sf::Texture& texture);
-	void Update(GameState* state, double dt) override;
+	void Update(GameState* state, float dt) override;
 	void GroundCollision(float intersection_height)
 	{
 		m_position.y -= intersection_height;

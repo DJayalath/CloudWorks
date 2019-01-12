@@ -12,7 +12,7 @@ public:
 	void Cleanup() {}
 
 	void HandleEvents(Engine* engine);
-	void Update(Engine* engine, double dt);
+	void Update(Engine* engine, float dt);
 	void Draw(Engine* engine);
 
 private:

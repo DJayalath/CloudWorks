@@ -13,3 +13,4 @@
 - Fixing spawning too close
 - SOUNDS!
 - MASSIVE speed increase from static declaration
+- Camera speed increase & difficulty increase

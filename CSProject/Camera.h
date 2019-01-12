@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 
-#include "Bullet.h"
-
 class Player;
 class GameState;
 
@@ -15,23 +13,22 @@ public:
 	~Camera();
 
 	sf::View GetView();
-	void Update(GameState* state, double dt);
+	void Update(GameState* state, float dt);
 	sf::Vector2f GetCentre() { return m_view.getCenter(); }
 
 	sf::Text GetDistText() { return m_dist_text; }
 	sf::Text GetHealthText() { return m_kill_text; }
-	sf::Text GetTimeText() { return m_time_text; }
+	sf::Text GetTimeText() { return m_score_text; }
 
 private:
 
-	void MoveCamera(Player* player, double dt);
+	void MoveCamera(Player* player, float dt);
 	void MoveText(Player* player);
-	void CheckBullets(std::list<Bullet>* bullets);
 
 	sf::View m_view;
 	sf::Font m_score_font;
 	sf::Text m_dist_text;
 	sf::Text m_kill_text;
-	sf::Text m_time_text;
+	sf::Text m_score_text;
 };
 

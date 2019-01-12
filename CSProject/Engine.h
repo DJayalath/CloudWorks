@@ -20,7 +20,7 @@ public:
 	void PopState();
 
 	void HandleEvents();
-	void Update(double dt);
+	void Update(float dt);
 	void Draw();
 
 	sf::RenderWindow* GetWindow();

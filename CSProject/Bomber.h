@@ -5,7 +5,7 @@ class Bomber :
 {
 public:
 	Bomber(sf::Vector2f position, sf::Vector2f scale, sf::Texture& texture);
-	void Update(GameState* state, double dt) override;
+	void Update(GameState* state, float dt) override;
 	bool GetDespawn() { return m_despawn; }
 
 private:
@@ -13,5 +13,5 @@ private:
 	bool m_despawn = false;
 	enum {DELIVERING, STOPPED, DROPPED, LEAVING};
 	int m_state = DELIVERING;
-	float m_pause_time = 0;
+	sf::Int32 m_pause_time = 0;
 };

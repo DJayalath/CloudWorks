@@ -10,9 +10,9 @@ TerrainGenerator::TerrainGenerator()
 
 void TerrainGenerator::Update(GameState* state, std::list<Plank>& m_planks)
 {
-	if (state->GetPlayer()->GetPosition().x + 900 > next_spawn)
+	if (state->GetCamera()->GetCentre().x + 900 > next_spawn)
 	{
-		if (state->GetPlayer()->GetPosition().x - 900 > m_planks.front().GetPosition().x)
+		if (state->GetCamera()->GetCentre().x - 900 > m_planks.front().GetPosition().x)
 			m_planks.erase(m_planks.begin());
 
 		CreateNewTerrain(m_planks);

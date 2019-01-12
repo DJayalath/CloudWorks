@@ -15,12 +15,12 @@ const sf::Uint32 HEIGHT = 720;
 int main(int argc, char **argv)
 {
 	// Create an 'Engine' object for managing the game engine
-	Engine engine(WIDTH, HEIGHT, "CS PROJECT");
+	Engine engine(WIDTH, HEIGHT, "CloudWorks");
 
 	/* Initialise 'clock' and 'dt' for counting and tracking
 	time between frames */
 	sf::Clock clock;
-	double dt;
+	float dt;
 
 	/* Start the game by loading the game state. This will be
 	the main menu once this has been defined. */

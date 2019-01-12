@@ -16,54 +16,38 @@ Camera::Camera() :
 	// select the font
 	m_dist_text.setFont(m_score_font); // font is a sf::Font
 	m_kill_text.setFont(m_score_font);
-	m_time_text.setFont(m_score_font);
+	m_score_text.setFont(m_score_font);
 
 	// set the character size
 	m_dist_text.setCharacterSize(24); // in pixels, not points!
 	m_kill_text.setCharacterSize(24);
-	m_time_text.setCharacterSize(24);
+	m_score_text.setCharacterSize(24);
 
 	// set the color
 	m_dist_text.setFillColor(sf::Color(93, 87, 107));
 	m_kill_text.setFillColor(sf::Color(93, 87, 107));
-	m_time_text.setFillColor(sf::Color(93, 87, 107));
+	m_score_text.setFillColor(sf::Color(93, 87, 107));
 
 }
 Camera::~Camera() {}
 
-void Camera::Update(GameState* state, double dt)
+void Camera::Update(GameState* state, float dt)
 {
 	MoveCamera(state->GetPlayer(), dt);
 	MoveText(state->GetPlayer());
-	CheckBullets(state->GetBullets());
-}
-
-void Camera::CheckBullets(std::list<Bullet>* bullets)
-{
-	for (auto &&b : *bullets)
-	{
-		if (b.GetPosition().x > m_view.getCenter().x + 680)
-			b.SetDespawn(true);
-		else if (b.GetPosition().x < m_view.getCenter().x - 680)
-			b.SetDespawn(true);
-		else if (b.GetPosition().y > m_view.getCenter().y + 400)
-			b.SetDespawn(true);
-		else if (b.GetPosition().y < m_view.getCenter().y - 400)
-			b.SetDespawn(true);
-	}
 }
 
 void Camera::MoveText(Player* player)
 {
 	m_dist_text.setString("Distance\n" + std::to_string(static_cast<int>(player->GetPosition().x)));
-	m_kill_text.setString("Kills\n" + std::to_string(static_cast<int>(player->EnemiesKilled())));
-	m_time_text.setString("Time\n" + std::to_string(static_cast<int>(player->GetTime())));
+	m_kill_text.setString("Time\n" + std::to_string(static_cast<int>(player->GetTime())));
+	m_score_text.setString("Score\n" + std::to_string(static_cast<int>(player->GetPosition().x * 0.1f + 50.f * player->GetTime())));
 	m_dist_text.setPosition(m_view.getCenter().x - 600, m_view.getCenter().y - 350);
 	m_kill_text.setPosition(m_view.getCenter().x - 400, m_view.getCenter().y - 350);
-	m_time_text.setPosition(m_view.getCenter().x - 250, m_view.getCenter().y - 350);
+	m_score_text.setPosition(m_view.getCenter().x - 250, m_view.getCenter().y - 350);
 }
 
-void Camera::MoveCamera(Player* player, double dt)
+void Camera::MoveCamera(Player* player, float dt)
 {
 	/* Camera Control
 	- If player moves beyond camera centre, the camera moves with player
@@ -85,8 +69,8 @@ void Camera::MoveCamera(Player* player, double dt)
 		player->SetPosition(cam_edgex, player->GetPosition().y);
 	}
 
-	// Naturally move camera all the time to keep player moving forward
-	m_view.move(sf::Vector2f(50 * static_cast<float>(dt), 0));
+	// Naturally move camera all the time to keep player moving forward (speed increases with distance)
+	m_view.move(sf::Vector2f(std::fminf(50.f + player->GetPosition().x / 100.f, 225.f) * dt, 0));
 
 }
 

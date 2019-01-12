@@ -13,7 +13,7 @@ public:
 	{
 	}
 
-	void Update(GameState* state, double dt) override
+	void Update(GameState* state, float dt) override
 	{
 
 	}
