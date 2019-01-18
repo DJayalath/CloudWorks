@@ -1,3 +1,7 @@
 - Basics of engine
 - Expand on inputs, assets, text buffer after
 - Show menu states added later!
+- Removal of terrain heights as SFML collisions works better!
+
+- Jumping dt error
+- User feedback on jumping and the teleport glitch!

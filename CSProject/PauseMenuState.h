@@ -28,7 +28,6 @@ private:
 	sf::Vector2f pos;
 	sf::FloatRect text_rect;
 
-	sf::Font m_font;
 	sf::Text m_text[NUM_BUTTONS];
 };
 

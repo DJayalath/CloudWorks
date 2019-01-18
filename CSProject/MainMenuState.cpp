@@ -4,6 +4,7 @@
 
 MainMenuState::MainMenuState(Engine* engine)
 {
+	AssetManager::m_music[AssetManager::MAIN].stop();
 	floating_clock.restart();
 
 	m_tex_cloudboy.loadFromFile("./res/textures/player.png");
@@ -14,14 +15,11 @@ MainMenuState::MainMenuState(Engine* engine)
 	sf::Vector2f pos;
 	sf::FloatRect text_rect;
 
-	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
-		std::cout << "ERROR: Failed to load font" << std::endl;
-
 	bg_tex.loadFromFile("./res/backgrounds/main_menu.png");
 	m_background.setTexture(bg_tex);
 
 	// Start Text (DEFAULT)
-	m_text[START].setFont(m_font);
+	m_text[START].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text[START].setCharacterSize(36);
 	m_text[START].setFillColor(sf::Color(244, 66, 66));
 	m_text[START].setString("START GAME");
@@ -32,7 +30,7 @@ MainMenuState::MainMenuState(Engine* engine)
 	m_text[START].setPosition(pos);
 
 	// Quit Text
-	m_text[HIGHSCORES].setFont(m_font);
+	m_text[HIGHSCORES].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text[HIGHSCORES].setCharacterSize(36);
 	m_text[HIGHSCORES].setFillColor(sf::Color(93, 87, 107));
 	m_text[HIGHSCORES].setString("HIGHSCORES");
@@ -42,7 +40,7 @@ MainMenuState::MainMenuState(Engine* engine)
 	m_text[HIGHSCORES].setPosition(pos);
 
 	// Quit Text
-	m_text[QUIT].setFont(m_font);
+	m_text[QUIT].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text[QUIT].setCharacterSize(36);
 	m_text[QUIT].setFillColor(sf::Color(93, 87, 107));
 	m_text[QUIT].setString("QUIT GAME");
@@ -55,11 +53,12 @@ MainMenuState::MainMenuState(Engine* engine)
 	// Controls Text
 	for (auto &t : m_controls)
 	{
-		t.setFont(m_font);
+		t.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 		t.setCharacterSize(18);
 		t.setFillColor(sf::Color::White);
 	}
 	// Controls Title
+	bool joycon = sf::Joystick::isConnected(0);
 	m_controls[0].setString("Controls");
 	m_controls[0].setFillColor(sf::Color::Yellow);
 	m_controls[0].setCharacterSize(24);
@@ -67,22 +66,22 @@ MainMenuState::MainMenuState(Engine* engine)
 	m_controls[0].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	m_controls[0].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, -58));
 	// Line 1
-	m_controls[1].setString("W/S = Menu Up/Down");
+	m_controls[1].setString((joycon) ? "D-Pad = Menu Up/Down" : "W/S = Menu Up/Down");
 	text_rect = m_controls[1].getLocalBounds();
 	m_controls[1].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	m_controls[1].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, -28));
 	// Line 2
-	m_controls[2].setString("Enter = Continue");
+	m_controls[2].setString((joycon) ? "A = Continue/Jump" : "Enter = Continue");
 	text_rect = m_controls[2].getLocalBounds();
 	m_controls[2].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	m_controls[2].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, 2));
 	// Line 3
-	m_controls[3].setString("Escape = Pause/Return");
+	m_controls[3].setString((joycon) ? "B = Pause/Return" : "Escape = Pause/Return");
 	text_rect = m_controls[3].getLocalBounds();
 	m_controls[3].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	m_controls[3].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, 32));
 	// Line 4
-	m_controls[4].setString("W/A/S = Jump/Left/Right");
+	m_controls[4].setString((joycon) ? "Left-stick = Left/Right" : "W/A/S = Jump/Left/Right");
 	text_rect = m_controls[4].getLocalBounds();
 	m_controls[4].setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	m_controls[4].setPosition(engine->GetWindow()->getView().getCenter() + sf::Vector2f(-400, 62));
@@ -90,24 +89,37 @@ MainMenuState::MainMenuState(Engine* engine)
 
 void MainMenuState::HandleEvents(Engine* engine)
 {
-
-	if (engine->GetReleased(sf::Keyboard::S) && m_selected < NUM_BUTTONS - 1)
+	// Test if key pressed and if not on top or bottom buttons
+	// to prevent going outside array bounds
+	if (engine->GetPressed(engine->DOWN) && m_selected < NUM_BUTTONS - 1)
 	{
+		engine->SetLatch(engine->DOWN);
+		// Play selection sound
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
+		// Colour current button in grey
 		m_text[m_selected].setFillColor(m_grey);
+		// Increment and colour new button red
 		m_text[++m_selected].setFillColor(m_red);
 	}
-
-	if (engine->GetReleased(sf::Keyboard::W) && m_selected > 0)
+	else if (engine->GetPressed(engine->UP) && m_selected > 0)
 	{
+		engine->SetLatch(engine->UP);
+		// Play selection sound
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
+		// Colour current button in grey
 		m_text[m_selected].setFillColor(m_grey);
+		// De-increment and colour new button red
 		m_text[--m_selected].setFillColor(m_red);
 	}
 
-	if (engine->GetReleased(sf::Keyboard::Enter))
+	// Check user presses continue ('Enter') on an option
+	if (engine->GetPressed(engine->CONTINUE))
 	{
+		engine->SetLatch(engine->CONTINUE);
+		engine->SetLatch(engine->JUMP);
+		// Play, choice pressed sound
 		AssetManager::m_sounds[AssetManager::BLIP].play();
+		// Change state or quit based on selection
 		switch (m_selected)
 		{
 		case QUIT:
@@ -123,9 +135,6 @@ void MainMenuState::HandleEvents(Engine* engine)
 			break;
 		}
 	}
-
-	if (engine->GetReleased(sf::Keyboard::Escape))
-		engine->GetWindow()->close();
 }
 
 void MainMenuState::Update(Engine* engine, float dt)

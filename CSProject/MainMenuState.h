@@ -29,7 +29,6 @@ private:
 
 	sf::Texture bg_tex;
 	sf::Sprite m_background;
-	sf::Font m_font;
 	sf::Text m_text[NUM_BUTTONS];
 	static const int LINES = 5;
 	sf::Text m_controls[LINES];

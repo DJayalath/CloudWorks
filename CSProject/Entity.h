@@ -16,8 +16,8 @@ public:
 	// Attribute getters
 	sf::Sprite& GetSprite();
 	sf::FloatRect GetBounds();
-	sf::Vector2f GetPosition();
-	sf::Vector2f GetVelocity();
+	sf::Vector2f& GetPosition();
+	sf::Vector2f& GetVelocity();
 	float GetHealth();
 
 	// Attribute setters

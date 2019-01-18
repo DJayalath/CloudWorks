@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Player.h"
 #include "GameState.h"
+#include "AssetManager.h"
 
 #include <iostream>
 #include <string>
@@ -8,15 +9,10 @@
 Camera::Camera() :
 	m_view(sf::Vector2f(640.f, 360.f), sf::Vector2f(1280.f, 720.f))
 {
-	if (!m_score_font.loadFromFile("./res/fonts/joystix.ttf"))
-	{
-		std::cout << "ERROR: Failed to load font" << std::endl;
-	}
-
 	// select the font
-	m_dist_text.setFont(m_score_font); // font is a sf::Font
-	m_kill_text.setFont(m_score_font);
-	m_score_text.setFont(m_score_font);
+	m_dist_text.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]); // font is a sf::Font
+	m_kill_text.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
+	m_score_text.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 
 	// set the character size
 	m_dist_text.setCharacterSize(24); // in pixels, not points!
@@ -53,7 +49,6 @@ void Camera::MoveCamera(Player* player, float dt)
 	- If player moves beyond camera centre, the camera moves with player
 	- Player is restricted from moving behind camera
 	*/
-
 	float player_posx = player->GetPosition().x;
 	float cam_centrex = m_view.getCenter().x;
 	float cam_edgex = cam_centrex - m_view.getSize().x / 2;
@@ -62,16 +57,12 @@ void Camera::MoveCamera(Player* player, float dt)
 	if (player_posx > cam_centrex)
 		m_view.setCenter(sf::Vector2f(player_posx, m_view.getCenter().y));
 
-	/* Stop player from moving behind camera by resetting position and
-	eliminating their horizontal velocity */
+	/* Stop player from moving behind camera by resetting their horizontal velocity */
 	if (player_posx < cam_edgex)
-	{
 		player->SetPosition(cam_edgex, player->GetPosition().y);
-	}
 
 	// Naturally move camera all the time to keep player moving forward (speed increases with distance)
 	m_view.move(sf::Vector2f(std::fminf(50.f + player->GetPosition().x / 100.f, 225.f) * dt, 0));
-
 }
 
 sf::View Camera::GetView()

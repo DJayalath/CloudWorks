@@ -143,5 +143,7 @@
     <None Include="Iteration01.cd">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Iter1.cd" />
+    <None Include="Iter2.cd" />
   </ItemGroup>
 </Project>

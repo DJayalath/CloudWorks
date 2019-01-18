@@ -5,11 +5,6 @@
 
 ScoresState::ScoresState(Engine* engine)
 {
-	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
-	{
-		std::cout << "ERROR: Failed to load font" << std::endl;
-	}
-
 	bg_tex.loadFromFile("./res/backgrounds/high_scores.png");
 	m_background.setTexture(bg_tex);
 
@@ -17,7 +12,7 @@ ScoresState::ScoresState(Engine* engine)
 
 	// Read score file
 	std::string line;
-	std::ifstream score_file("highscores.txt");
+	std::ifstream score_file("highscores.data");
 	if (score_file.is_open())
 	{
 		// Read lines from file
@@ -38,6 +33,7 @@ ScoresState::ScoresState(Engine* engine)
 	else
 		std::cout << "Failed to read highscores file" << std::endl;
 
+	// Set default displacements
 	pos.x -= 265;
 	pos.y -= 60;
 	for (int i = 0; i < count; i++)
@@ -48,26 +44,27 @@ ScoresState::ScoresState(Engine* engine)
 		m_place[i].setString(std::to_string(i + 1));
 
 		// Set fonts
-		m_names[i].setFont(m_font);
-		m_scores[i].setFont(m_font);
-		m_place[i].setFont(m_font);
+		m_names[i].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
+		m_scores[i].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
+		m_place[i].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 
 		// Set sizes
 		m_names[i].setCharacterSize(24);
 		m_scores[i].setCharacterSize(24);
 		m_place[i].setCharacterSize(24);
 
-		// Set positions
+		// Set horizontal positions
 		m_names[i].setPosition(pos);
 		m_scores[i].setPosition(pos + sf::Vector2f(340, 0));
 		m_place[i].setPosition(pos + sf::Vector2f(-60, 0));
+		// Increment by 25 pixels in height for each row
 		pos.y += 25;
 	}
 }
 
 void ScoresState::HandleEvents(Engine* engine)
 {
-	if (engine->GetReleased(sf::Keyboard::Escape))
+	if (engine->GetReleased(engine->BACK))
 	{
 		AssetManager::m_sounds[AssetManager::BLIP].play();
 		engine->ChangeState(STATE_MAINMENU);

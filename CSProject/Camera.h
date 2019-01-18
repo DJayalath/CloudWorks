@@ -26,7 +26,6 @@ private:
 	void MoveText(Player* player);
 
 	sf::View m_view;
-	sf::Font m_score_font;
 	sf::Text m_dist_text;
 	sf::Text m_kill_text;
 	sf::Text m_score_text;

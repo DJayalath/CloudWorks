@@ -9,8 +9,6 @@ class Player : public Entity
 {
 public:
 
-	/* Player requires a starting x and y
-	co-ordinate for initialization */
 	Player(sf::Vector2f position, sf::Vector2f scale, sf::Texture& texture);
 	~Player();
 
@@ -20,6 +18,9 @@ public:
 	bool& Grounded() { return m_grounded; }
 
 	void SetHealth(float h) { m_health = h; }
+	void Accelerate(int direction, float dt);
+	void ApplyFriction(float dt);
+	void Jump(float dt);
 
 private:
 
@@ -27,8 +28,6 @@ private:
 	sf::Vector2f LEFT = sf::Vector2f(-1, 0);
 	sf::Vector2f RIGHT = sf::Vector2f(1, 0);
 	sf::Vector2f DOWN = sf::Vector2f(0, -1);
-
-	void Accelerate(float& velocity, int direction, float dt);
 
 	// Physics Constants
 	const float m_accelwalk = 8000.f;

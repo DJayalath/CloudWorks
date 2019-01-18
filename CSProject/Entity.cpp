@@ -31,12 +31,12 @@ sf::FloatRect Entity::GetBounds()
 	return m_sprite.getGlobalBounds();
 }
 
-sf::Vector2f Entity::GetPosition()
+sf::Vector2f& Entity::GetPosition()
 {
 	return m_position;
 }
 
-sf::Vector2f Entity::GetVelocity()
+sf::Vector2f& Entity::GetVelocity()
 {
 	return m_velocity;
 }

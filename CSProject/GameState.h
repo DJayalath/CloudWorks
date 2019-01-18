@@ -53,6 +53,8 @@ private:
 	sf::Clock m_timer;
 	float m_time;
 
+	bool player_sliding = false;
+
 	// Game camera
 	Camera m_camera;
 	// Terrain generator

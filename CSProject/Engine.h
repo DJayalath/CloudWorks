@@ -42,9 +42,20 @@ public:
 
 	bool GetReleased(unsigned int keycode);
 	bool GetPressed(unsigned int keycode);
-	bool GetMouseReleased(unsigned int keycode);
-	bool GetMousePressed(unsigned int keycode);
-	sf::Vector2i GetMousePos();
+	void ReleaseLatch(unsigned int keycode);
+	void SetLatch(unsigned int keycode);
+
+	enum
+	{
+		LEFT,
+		RIGHT,
+		JUMP,
+		UP,
+		DOWN,
+		CONTINUE,
+		BACK,
+		MAX_BUTTONS
+	};
 
 private:
 
@@ -60,13 +71,13 @@ private:
 	sf::RenderWindow m_window;
 	sf::Event m_event;
 
-	struct KeyState
+	bool use_joystick = false;
+
+	struct ButtonState
 	{
 		bool pressed;
 		bool released;
-	} m_keys[sf::Keyboard::KeyCount], m_mouse[sf::Mouse::ButtonCount];
-	bool m_key_newstate;
-
-	sf::Vector2i m_mousepos;
+		bool latch;
+	} m_buttons[MAX_BUTTONS];
 };
 

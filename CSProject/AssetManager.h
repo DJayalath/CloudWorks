@@ -9,10 +9,11 @@
 class AssetManager
 {
 public:
+	// Default constructor
 	AssetManager();
 
 	// Textures
-	enum TextureType {BALL, PLAYER, BOMBER, ANVIL, SPIKE, MAX_TEXTURES};
+	enum TextureType {BALL, PLAYER, BOMBER, ANVIL, SPIKE, PLANK, MAX_TEXTURES};
 	static sf::Texture m_textures[MAX_TEXTURES];
 	
 	// Sounds
@@ -22,6 +23,10 @@ public:
 	// Music
 	enum MusicType {MAIN, MAX_MUSIC};
 	static sf::Music m_music[MAX_MUSIC];
+
+	// Fonts
+	enum FontType {JOYSTIX, MAX_FONTS};
+	static sf::Font m_fonts[MAX_FONTS];
 
 private:
 	static sf::SoundBuffer m_soundbuffer[MAX_SOUNDS];

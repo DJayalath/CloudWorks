@@ -22,7 +22,6 @@ private:
 	sf::Sprite m_background;
 	sf::Vector2f pos;
 	sf::FloatRect text_rect;
-	sf::Font m_font;
 	std::vector<std::string> score_buffer[NUM_SCORES];
 	sf::Text m_names[NUM_SCORES];
 	sf::Text m_scores[NUM_SCORES];

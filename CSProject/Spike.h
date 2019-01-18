@@ -6,12 +6,9 @@ class Spike :
 public:
 	Spike(sf::Vector2f position, sf::Vector2f scale, sf::Texture& texture);
 	void Update(GameState* state, float dt) override;
-	void GroundCollision(float intersection_height)
-	{
-		m_position.y -= intersection_height;
-		m_velocity.y = 0;
-	}
+	bool GetDespawn() { return m_despawn; }
 private:
 	float m_gravity = 500;
+	bool m_despawn = false;
 };
 

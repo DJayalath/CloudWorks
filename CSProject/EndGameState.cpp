@@ -5,59 +5,66 @@
 
 EndGameState::EndGameState(Engine* engine)
 {
+	engine->SetLatch(engine->CONTINUE);
+	engine->SetLatch(engine->JUMP);
+	// Stop any music playing and play the end game sound
 	AssetManager::m_music[AssetManager::MAIN].stop();
 	AssetManager::m_sounds[AssetManager::LOSE].play();
 
-	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
-	{
-		std::cout << "ERROR: Failed to load font" << std::endl;
-	}
-
-	// Background image
+	// Load background image
 	bg_tex.loadFromFile("./res/backgrounds/game_over.png");
+	// Set background texture to the background sprite
 	m_background.setTexture(bg_tex);
 	// Position background in exact centre of screen
 	pos = engine->GetWindow()->getView().getCenter();
+	// Adjust origin based on dimensions of background texture
 	pos.x -= 576 / 2;
 	pos.y -= 288 / 2;
+	// Set the background sprite's position
 	m_background.setPosition(pos);
 
 	// Score text
-	m_score.setFont(m_font);
-	m_score.setCharacterSize(36);
-	m_score.setFillColor(sf::Color(252, 248, 28));
+	m_score.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]); // Assign font
+	m_score.setCharacterSize(36); // Set 36px char size
+	m_score.setFillColor(sf::Color(252, 248, 28)); // Fill with 'neon-yellow' colour
 	m_score.setString("Score = " + std::to_string((int)engine->GetUserScore()));
-	// Text centering and positioning
+	// Centre text horizontally
 	text_rect = m_score.getLocalBounds();
 	m_score.setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	pos = engine->GetWindow()->getView().getCenter();
+	// Move text just above centre
 	pos.y -= 20;
+	// Set position attribute in the text variable
 	m_score.setPosition(pos);
 
 	// 'Enter Name' text
-	m_text.setFont(m_font);
+	m_text.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text.setCharacterSize(36);
-	m_text.setFillColor(sf::Color(93, 87, 107));
+	m_text.setFillColor(sf::Color(93, 87, 107)); // Fill with grey colour
 	m_text.setString("Enter Name");
+	// Centre text horizontally
 	text_rect = m_text.getLocalBounds();
 	m_text.setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	pos = engine->GetWindow()->getView().getCenter();
+	// Position vertically
 	pos.y += 30;
 	m_text.setPosition(pos);
 
 	// Field for displaying player's input
-	m_input.setFont(m_font);
+	m_input.setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_input.setCharacterSize(36);
-	m_input.setFillColor(sf::Color(252, 248, 28));
+	m_input.setFillColor(sf::Color(252, 248, 28)); // Fill in 'neon-yellow' colour
+	// Centre horizontally
 	text_rect = m_input.getLocalBounds();
 	m_input.setOrigin(text_rect.left + text_rect.width / 2.0f, text_rect.top + text_rect.height / 2.0f);
 	pos = engine->GetWindow()->getView().getCenter();
+	// Position vertically
 	pos.y += 75;
 	m_input.setPosition(pos);
 
 	// Read score file to find index to insert score
 	std::string line;
-	std::ifstream score_file("highscores.txt");
+	std::ifstream score_file("highscores.data");
 	if (score_file.is_open())
 	{
 		int count = 0; // To track which line we are on
@@ -97,8 +104,10 @@ EndGameState::EndGameState(Engine* engine)
 
 void EndGameState::HandleEvents(Engine* engine)
 {
-	if (engine->GetReleased(sf::Keyboard::Enter))
+	if (engine->GetPressed(engine->CONTINUE))
 	{
+		engine->SetLatch(engine->CONTINUE);
+		engine->SetLatch(engine->JUMP);
 		// Play sound to indicate submit key pressed to player
 		AssetManager::m_sounds[AssetManager::BLIP].play();
 		// If no index found, it must be the lowest score so should go to end of file
@@ -108,7 +117,7 @@ void EndGameState::HandleEvents(Engine* engine)
 			insertion_index, engine->GetTextBuffer() + 
 			" " + std::to_string((int)engine->GetUserScore()));
 		// Re-open highscores file
-		std::ofstream out("highscores.txt");
+		std::ofstream out("highscores.data");
 		// Write each record in buffer back to file
 		for (auto &record : m_file_buffer)
 			out << record << std::endl;
@@ -123,8 +132,9 @@ void EndGameState::HandleEvents(Engine* engine)
 		// Switch back into the menu state
 		engine->ChangeState(STATE_MAINMENU);
 	}
-	else if (engine->GetReleased(sf::Keyboard::Escape))
+	else if (engine->GetPressed(engine->BACK))
 	{
+		engine->SetLatch(engine->BACK);
 		AssetManager::m_sounds[AssetManager::BLIP].play();
 		engine->CloseTextBuffer();
 		// Reset view

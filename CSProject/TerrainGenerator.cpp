@@ -1,39 +1,29 @@
 #include "TerrainGenerator.h"
 #include "GameState.h"
+#include "AssetManager.h"
 
-sf::Texture TerrainGenerator::m_tex;
-
-TerrainGenerator::TerrainGenerator()
-{
-	m_tex.loadFromFile("./res/textures/wooden_plank.png");
-}
+TerrainGenerator::TerrainGenerator() :
+	PLANK_WIDTH(AssetManager::m_textures[AssetManager::PLANK].getSize().x * SCALE)
+{}
 
 void TerrainGenerator::Update(GameState* state, std::list<Plank>& m_planks)
 {
-	if (state->GetCamera()->GetCentre().x + 900 > next_spawn)
+	// Test if a new 'plank' needs to be generated from camera's position
+	// Although the player can only see ahead 640 pixels from the camera
+	// centre, 900 pixels are added to allow room for enemies to be spawned
+	while (state->GetCamera()->GetCentre().x + 900 > next_spawn)
 	{
-		if (state->GetCamera()->GetCentre().x - 900 > m_planks.front().GetPosition().x)
-			m_planks.erase(m_planks.begin());
-
-		CreateNewTerrain(m_planks);
+		// Creates new 'Plank' in the list at constant height and scale but uses the variable
+		// 'next_spawn' to determine the horizontal position of the plank.
+		m_planks.push_back(Plank(sf::Vector2f(next_spawn, HEIGHT_MIN), sf::Vector2f(0.75f, 0.75f),
+			AssetManager::m_textures[AssetManager::PLANK]));
+		num_spawned++;
+		// 'next_spawn' is incremented by the width of the plank so that the next plank will
+		// be spawned exactly next to the current plank
+		next_spawn += PLANK_WIDTH;
 	}
 
-	for (auto& plank : m_planks)
-	{	
-		sf::FloatRect result;
-		if (state->GetPlayer()->GetSprite().getGlobalBounds().intersects(plank.GetSprite().getGlobalBounds(), result))
-		{
-			if (state->GetPlayer()->GetSprite().getPosition().y + state->GetPlayer()->GetSprite().getGlobalBounds().height / 2.f < plank.GetSprite().getPosition().y - plank.GetSprite().getGlobalBounds().height)
-			{
-				state->GetPlayer()->SetPosition(state->GetPlayer()->GetPosition().x, state->GetPlayer()->GetPosition().y - result.height);
-				state->GetPlayer()->SetVelocity(state->GetPlayer()->GetVelocity().x, 0.f);
-				if (!state->GetPlayer()->Grounded())
-				{
-					state->GetPlayer()->Grounded() = true;
-				}
-			}
-			else
-				state->GetPlayer()->SetVelocity(0.f, state->GetPlayer()->GetVelocity().y);
-		}
-	}
+	// Delete any 'planks' that move behind camera out of view
+	while (state->GetCamera()->GetCentre().x - (640 + PLANK_WIDTH) > m_planks.front().GetPosition().x)
+		m_planks.erase(m_planks.begin());
 }

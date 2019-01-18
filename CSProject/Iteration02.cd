@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="EndGameState" Collapsed="true">
-    <Position X="4.5" Y="4.75" Width="1.5" />
+    <Position X="5.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAYAEAgAIAAAAgAAAABQAIAAAAAAABAQAAACAFAQAAA=</HashCode>
+      <HashCode>AAYAEAgAAAAAAgAAAABQAIAAAAAAABAQAAACAFAQAAA=</HashCode>
       <FileName>EndGameState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AssetManager" Collapsed="true">
-    <Position X="18.5" Y="0.5" Width="1.5" />
+    <Position X="9.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAACAAAAIAg=</HashCode>
+      <HashCode>AAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAACAAABIAg=</HashCode>
       <FileName>AssetManager.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -36,23 +36,23 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Camera" Collapsed="true">
-    <Position X="20.25" Y="0.5" Width="1.5" />
+    <Position X="11.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQCCIAAAAAAAAABQBAIAAAAAAEACIAAAAABIBAEAAA=</HashCode>
+      <HashCode>AAQCCIAAAAAAAAABQBAIAAAAAAEAAIAAAAABIBAEAAA=</HashCode>
       <FileName>Camera.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entity" Collapsed="true">
     <Position X="10.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAQAAAAEACgAEQAAAAAAAQAgACAAAkQAAAAAACAAAAA=</HashCode>
+      <HashCode>EAQAAAAEACgAEAAAAAAAAQAgACAAAkQAAAAAACAAAAA=</HashCode>
       <FileName>Entity.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameState" Collapsed="true">
-    <Position X="6.75" Y="4.75" Width="1.5" />
+    <Position X="8" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EBQggAAAAAAAAoAAAAEUIAAgBCAAAAACAAACAGgCIAQ=</HashCode>
+      <HashCode>EBQggAAAAAAAAoAAAQEUIAAgBCAAAAACAAACAGgCIAQ=</HashCode>
       <FileName>GameState.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -66,61 +66,61 @@
   <Class Name="Spike" Collapsed="true">
     <Position X="16" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAIgAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAgAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAEA=</HashCode>
       <FileName>Spike.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Plank" Collapsed="true">
     <Position X="4.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAABAAAAAABAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>TerrainGenerator.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TerrainGenerator" Collapsed="true">
-    <Position X="20.25" Y="1.5" Width="1.5" />
+    <Position X="11.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAACAAAAAAKAAA=</HashCode>
+      <HashCode>QAQQAAEAAAAAAAAAAACAAAAAAAAAAAAIiAAAAAACAAA=</HashCode>
       <FileName>TerrainGenerator.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MainMenuState" Collapsed="true">
-    <Position X="9" Y="4.75" Width="1.5" />
+    <Position X="10.25" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACQAAIAAMAAIBggAAABQAAAgAAAAAAAACBgCAEAQAAA=</HashCode>
+      <HashCode>ACQAAIAAEAAIBggAAABQAAAgAAAAAAAACBgCAEAQAAA=</HashCode>
       <FileName>MainMenuState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PauseMenuState" Collapsed="true">
-    <Position X="11.25" Y="4.75" Width="1.5" />
+    <Position X="12.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAIAAAAgAAAABQAIACAAAAABAAABACAEAQAAQ=</HashCode>
+      <HashCode>AAQAAAAAAAAAAgAAAABQAIACAAAAABAAABACAEAQAAQ=</HashCode>
       <FileName>PauseMenuState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ScoresState" Collapsed="true">
-    <Position X="13.5" Y="4.75" Width="1.5" />
+    <Position X="14.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAABIAAAEgAgBABQAIgAAIAAABAAAAACAEAQCAA=</HashCode>
+      <HashCode>AAQAAAABAAAAEgAgBABQAIgAAIAAABAAAAACAEAQCAA=</HashCode>
       <FileName>ScoresState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProgramState" Collapsed="true">
-    <Position X="9" Y="3.5" Width="1.5" />
+    <Position X="10.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQgAAAAAAAAAgAAAAAQAAAAAAAAAAAAAAACAEgAAAA=</HashCode>
       <FileName>ProgramState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Engine" Collapsed="true">
-    <Position X="18.5" Y="1.5" Width="1.5" />
+    <Position X="9.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAQBEKCAEAACBwBAEAQTSEAAAAAAAAIIBBCAAACACAk=</HashCode>
       <FileName>Engine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="State" Collapsed="true">
-    <Position X="18.5" Y="2.75" Width="1.5" />
+    <Position X="9.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAQAAAAAAABAAIAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
       <FileName>Engine.h</FileName>

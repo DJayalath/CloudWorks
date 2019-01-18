@@ -191,6 +191,8 @@
     <ClInclude Include="TerrainGenerator.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Iter1.cd" />
+    <None Include="Iter2.cd" />
     <None Include="Iteration02.cd" />
     <None Include="Iteration01.cd" />
   </ItemGroup>

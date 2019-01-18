@@ -6,9 +6,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 {
 
 	AssetManager::m_sounds[AssetManager::BLIP].play();
-
-	if (!m_font.loadFromFile("./res/fonts/joystix.ttf"))
-		std::cout << "ERROR: Failed to load font" << std::endl;
+	AssetManager::m_music[AssetManager::MAIN].pause();
 
 	// Background Texture
 	bg_tex.loadFromFile("./res/backgrounds/pause.png");
@@ -19,7 +17,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 	m_background.setPosition(pos);
 
 	// DEFAULT
-	m_text[RESUME].setFont(m_font);
+	m_text[RESUME].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text[RESUME].setCharacterSize(36);
 	m_text[RESUME].setFillColor(sf::Color(244, 66, 66));
 	m_text[RESUME].setString("RESUME");
@@ -29,7 +27,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 	pos.y -= 20;
 	m_text[RESUME].setPosition(pos);
 
-	m_text[RESTART].setFont(m_font);
+	m_text[RESTART].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text[RESTART].setCharacterSize(36);
 	m_text[RESTART].setFillColor(sf::Color(93, 87, 107));
 	m_text[RESTART].setString("RESTART");
@@ -38,7 +36,7 @@ PauseMenuState::PauseMenuState(Engine* engine)
 	pos.y += 50;
 	m_text[RESTART].setPosition(pos);
 
-	m_text[MENU].setFont(m_font);
+	m_text[MENU].setFont(AssetManager::m_fonts[AssetManager::JOYSTIX]);
 	m_text[MENU].setCharacterSize(36);
 	m_text[MENU].setFillColor(sf::Color(93, 87, 107));
 	m_text[MENU].setString("MENU");
@@ -50,24 +48,29 @@ PauseMenuState::PauseMenuState(Engine* engine)
 
 void PauseMenuState::HandleEvents(Engine* engine)
 {
-	if (engine->GetReleased(sf::Keyboard::W) && m_selected > 0)
+	if (engine->GetPressed(engine->UP) && m_selected > 0)
 	{
+		engine->SetLatch(engine->UP);
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
 		m_text[m_selected].setFillColor(sf::Color(93, 87, 107));
 		m_text[--m_selected].setFillColor(sf::Color(244, 66, 66));
 	}
-	else if (engine->GetReleased(sf::Keyboard::S) && m_selected < NUM_BUTTONS - 1)
+	else if (engine->GetPressed(engine->DOWN) && m_selected < NUM_BUTTONS - 1)
 	{
+		engine->SetLatch(engine->DOWN);
 		AssetManager::m_sounds[AssetManager::SWITCH].play();
 		m_text[m_selected].setFillColor(sf::Color(93, 87, 107));
 		m_text[++m_selected].setFillColor(sf::Color(244, 66, 66));
 	}
-	else if (engine->GetReleased(sf::Keyboard::Enter))
+	else if (engine->GetPressed(engine->CONTINUE))
 	{
+		engine->SetLatch(engine->CONTINUE);
+		engine->SetLatch(engine->JUMP);
 		AssetManager::m_sounds[AssetManager::BLIP].play();
 		switch (m_selected)
 		{
 		case RESUME:
+			AssetManager::m_music[AssetManager::MAIN].play();
 			engine->PopState();
 			break;
 		case RESTART:
@@ -82,9 +85,11 @@ void PauseMenuState::HandleEvents(Engine* engine)
 			break;
 		}
 	}
-	else if (engine->GetReleased(sf::Keyboard::Escape))
+	else if (engine->GetPressed(engine->BACK))
 	{
+		engine->SetLatch(engine->BACK);
 		AssetManager::m_sounds[AssetManager::BLIP].play();
+		AssetManager::m_music[AssetManager::MAIN].play();
 		engine->PopState();
 	}
 }

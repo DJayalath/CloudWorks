@@ -13,16 +13,16 @@ Engine::Engine(sf::Uint32 win_width, sf::Uint32 win_height, sf::String win_title
 	// Disable key repeat
 	m_window.setKeyRepeatEnabled(false);
 
+	// Check joystick connected
+	if (sf::Joystick::isConnected(0))
+		use_joystick = true;
+
 	// Set key states to false initially
-	for (int i = 0; i < sf::Keyboard::KeyCount; i++)
+	for (int i = 0; i < MAX_BUTTONS; i++)
 	{
-		m_keys[i].pressed = false;
-		m_keys[i].released = false;
-	}
-	for (int i = 0; i < sf::Mouse::ButtonCount; i++)
-	{
-		m_mouse[i].released = false;
-		m_mouse[i].pressed = false;
+		m_buttons[i].pressed = false;
+		m_buttons[i].released = false;
+		m_buttons[i].latch = false;
 	}
 }
 
@@ -33,7 +33,7 @@ void Engine::ChangeState(State state)
 	while (!m_states.empty())
 		m_states.pop_back();
 
-	// Push desred state onto vector
+	// Push desired state onto vector
 	switch (state)
 	{
 	case STATE_GAME:
@@ -109,11 +109,10 @@ void Engine::HandleEvents()
 	if (!m_states.empty())
 		m_states.back()->HandleEvents(this);
 
-	// Reset key states
-	for (int i = 0; i < sf::Keyboard::KeyCount; i++)
-		m_keys[i].released = false;
-	for (int i = 0; i < sf::Mouse::ButtonCount; i++)
-		m_mouse[i].released = false;
+	for (int i = 0; i < MAX_BUTTONS; i++)
+	{
+		m_buttons[i].released = false;
+	}
 
 	// Run through SFML event queue on each frame
 	while (m_window.pollEvent(m_event))
@@ -121,23 +120,160 @@ void Engine::HandleEvents()
 		// Handle each event type
 		switch (m_event.type)
 		{
+		// Set keys pressed
 		case sf::Event::KeyPressed:
-			m_keys[m_event.key.code].pressed = true;
+			if (!use_joystick)
+			{
+				switch (m_event.key.code)
+				{
+				case sf::Keyboard::A:
+					m_buttons[LEFT].pressed = true;
+					break;
+				case sf::Keyboard::D:
+					m_buttons[RIGHT].pressed = true;
+					break;
+				case sf::Keyboard::W:
+					m_buttons[JUMP].pressed = true;
+					m_buttons[UP].pressed = true;
+					break;
+				case sf::Keyboard::S:
+					m_buttons[DOWN].pressed = true;
+					break;
+				case sf::Keyboard::Enter:
+					m_buttons[CONTINUE].pressed = true;
+					break;
+				case sf::Keyboard::Escape:
+					m_buttons[BACK].pressed = true;
+					break;
+				}
+			}
 			break;
 		case sf::Event::KeyReleased:
-			m_keys[m_event.key.code].released = true;
-			m_keys[m_event.key.code].pressed = false;
+			if (!use_joystick)
+			{
+				switch (m_event.key.code)
+				{
+				case sf::Keyboard::A:
+					m_buttons[LEFT].released = true;
+					m_buttons[LEFT].pressed = false;
+					break;
+				case sf::Keyboard::D:
+					m_buttons[RIGHT].released = true;
+					m_buttons[RIGHT].pressed = false;
+					break;
+				case sf::Keyboard::W:
+					m_buttons[JUMP].released = true;
+					m_buttons[UP].released = true;
+					m_buttons[JUMP].pressed = false;
+					m_buttons[UP].pressed = false;
+					break;
+				case sf::Keyboard::S:
+					m_buttons[DOWN].released = true;
+					m_buttons[DOWN].pressed = false;
+					break;
+				case sf::Keyboard::Enter:
+					m_buttons[CONTINUE].released = true;
+					m_buttons[DOWN].pressed = false;
+					break;
+				case sf::Keyboard::Escape:
+					m_buttons[BACK].released = true;
+					m_buttons[BACK].pressed = false;
+					break;
+				}
+			}
 			break;
-		case sf::Event::MouseMoved:
-			m_mousepos.x = m_event.mouseMove.x;
-			m_mousepos.y = m_event.mouseMove.y;
+		case sf::Event::JoystickButtonPressed:
+			if (use_joystick)
+			{
+				switch (m_event.joystickButton.button)
+				{
+				case sf::Joystick::Y:
+					m_buttons[CONTINUE].pressed = true;
+					m_buttons[JUMP].pressed = true;
+					break;
+				case sf::Joystick::Z:
+					m_buttons[BACK].pressed = true;
+					break;
+				}
+			}
 			break;
-		case sf::Event::MouseButtonPressed:
-			m_mouse[m_event.mouseButton.button].pressed = true;
+		case sf::Event::JoystickButtonReleased:
+			if (use_joystick)
+			{
+				switch (m_event.joystickButton.button)
+				{
+				case sf::Joystick::Y:
+					m_buttons[CONTINUE].released = true;
+					m_buttons[JUMP].released = true;
+					m_buttons[CONTINUE].pressed = false;
+					m_buttons[JUMP].pressed = false;
+					break;
+				case sf::Joystick::Z:
+					m_buttons[BACK].pressed = false;
+					m_buttons[BACK].released = true;
+					break;
+				}
+			}
 			break;
-		case sf::Event::MouseButtonReleased:
-			m_mouse[m_event.mouseButton.button].released = true;
-			m_mouse[m_event.mouseButton.button].pressed = false;
+		case sf::Event::JoystickMoved:
+			if (use_joystick)
+			{
+				switch (m_event.joystickMove.axis)
+				{
+				case sf::Joystick::Y:
+					if (m_event.joystickMove.position == -100)
+					{
+						m_buttons[UP].pressed = true;
+					}
+					else if (m_event.joystickMove.position == 100)
+					{
+						m_buttons[DOWN].pressed = true;
+					}
+					else
+					{
+						m_buttons[UP].released = true;
+						m_buttons[UP].pressed = false;
+						m_buttons[DOWN].released = true;
+						m_buttons[DOWN].pressed = false;
+					}
+					break;
+				case sf::Joystick::PovY:
+					if (m_event.joystickMove.position == 100)
+					{
+						m_buttons[UP].pressed = true;
+					}
+					else if (m_event.joystickMove.position == -100)
+					{
+						m_buttons[DOWN].pressed = true;
+					}
+					else
+					{
+						m_buttons[UP].released = true;
+						m_buttons[UP].pressed = false;
+						m_buttons[DOWN].released = true;
+						m_buttons[DOWN].pressed = false;
+					}
+					break;
+				case sf::Joystick::X:
+				case sf::Joystick::PovX:
+					if (m_event.joystickMove.position > 80)
+					{
+						m_buttons[RIGHT].pressed = true;
+					}
+					else if (m_event.joystickMove.position < -80)
+					{
+						m_buttons[LEFT].pressed = true;
+					}
+					else
+					{
+						m_buttons[RIGHT].released = true;
+						m_buttons[RIGHT].pressed = false;
+						m_buttons[LEFT].released = true;
+						m_buttons[LEFT].pressed = false;
+					}
+					break;
+				}
+			}
 			break;
 		case sf::Event::TextEntered:
 			if (use_text_buffer)
@@ -153,7 +289,7 @@ void Engine::HandleEvents()
 				// Add the input key into the "text_buffer" unless it is a carriage return or space
 				// If the string exceeds 14 characters, prevent more characters from being input
 				else if (m_event.text.unicode != 32 && m_event.text.unicode != 13
-					&& text_buffer.length() < 15)
+					&& text_buffer.length() <= 15)
 					text_buffer += static_cast<char>(m_event.text.unicode);
 			}
 			break;
@@ -161,9 +297,21 @@ void Engine::HandleEvents()
 			// Close window on request
 			m_window.close();
 			break;
+		case sf::Event::JoystickConnected:
+			use_joystick = true;
+			break;
+		case sf::Event::JoystickDisconnected:
+			use_joystick = false;
+			break;
 		default:
 			// Ignore if no events in queue
 			break;
+		}
+
+		for (int i = 0; i < MAX_BUTTONS; i++)
+		{
+			if (m_buttons[i].released)
+				m_buttons[i].latch = false;
 		}
 	}
 }
@@ -200,25 +348,23 @@ sf::RenderWindow* Engine::GetWindow()
 
 bool Engine::GetReleased(unsigned int keycode)
 {
-	return m_keys[keycode].released;
+	return m_buttons[keycode].released;
 }
 
 bool Engine::GetPressed(unsigned int keycode)
 {
-	return m_keys[keycode].pressed;
+	if (!m_buttons[keycode].latch)
+		return m_buttons[keycode].pressed;
+
+	return false;
 }
 
-bool Engine::GetMouseReleased(unsigned int keycode)
+void Engine::SetLatch(unsigned int keycode)
 {
-	return m_mouse[keycode].released;
+	m_buttons[keycode].latch = true;
 }
 
-bool Engine::GetMousePressed(unsigned int keycode)
+void Engine::ReleaseLatch(unsigned int keycode)
 {
-	return m_mouse[keycode].pressed;
-}
-
-sf::Vector2i Engine::GetMousePos()
-{
-	return m_mousepos;
+	m_buttons[keycode].latch = false;
 }
